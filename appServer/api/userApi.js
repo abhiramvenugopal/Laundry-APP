@@ -7,12 +7,12 @@ const jwt =require("jsonwebtoken");
 
 
 router.post('/signin',(req,res)=>{
-    const {email,password}=req.body
+    const {username,password}=req.body
     console.log(req.body)
-    if(!email || !password){
+    if(!username || !password){
         return res.status(422).json({error:"please add email or password"})
     }
-    userModel.findOne({email:email})
+    userModel.findOne({ $or: [{ email:username }, { phone: username }] })
     .then(savedUser=>{
         if(!savedUser){
             return res.status(422).json({error:"user not found"})

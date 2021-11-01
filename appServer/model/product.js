@@ -8,6 +8,7 @@ const productSchema= new Schema({
     press : {type:Number, required:true,default:15},
     fold : {type:Number, required:true,default:10},
     pack : {type:Number, required:true,default:25},
+    image: {type:String, required:true}
     
 })
 
