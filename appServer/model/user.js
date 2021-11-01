@@ -3,8 +3,8 @@ const Schema=mongoose.Schema
 
 const userSchema= new Schema({
     name : {type:String, required:true},
-    email:{type:String, required:true},
-    phone :{type :Number, required:true},
+    email:{type:String, required:true,unique:true},
+    phone :{type :String, required:true,unique:true},
     address: [
         {
             streetAddress :{type:String, required:true},
