@@ -8,22 +8,23 @@ const jwt =require("jsonwebtoken");
 
 router.post('/signin',(req,res)=>{
     const {email,password}=req.body
+    console.log(req.body)
     if(!email || !password){
         return res.status(422).json({error:"please add email or password"})
     }
     userModel.findOne({email:email})
     .then(savedUser=>{
         if(!savedUser){
-            return res.status(422).json({error:"please add email or password"})
+            return res.status(422).json({error:"user not found"})
         }
         bcrypt.compare(password,savedUser.password)
         .then(doMatch=>{
             if(doMatch){
-                const token =jwt.sign({_id:savedUser._id},process.env.JWT_SECRET)
+                const token =jwt.sign({data:savedUser._id},process.env.JWT_SECRET)
                 res.json({status:"success",token:token})
             }
             else{
-                return res.status(422).json({error:"please add email or password"})
+                return res.status(422).json({error:"password is wrong"})
             }
         })
     })

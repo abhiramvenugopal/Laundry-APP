@@ -2,25 +2,26 @@ const mongoose=require("mongoose")
 const Schema=mongoose.Schema
 
 const orderSchema= new Schema({
-    orderid : {type:String, required:true},
+    orderId : {type:String, required:true},
+    user:{type:Schema.Types.ObjectId,ref:"users"},
     status : [
         {
             statusCode: {type:String, required:true},
-		    date: {type:Date, required:true},
+		    date: {type:Date},
         }
     ],
     products : [
         {
             name : {type:String, required:true},
-            quantitiy : {type:Number, required:true},
-            washTypes : [ {type:String, required:true} ],
+            quantity : {type:Number, required:true},
+            serviseTypes : [ {type:String, required:true} ],
             price : {type:Number, required:true}
         }
     ],
     subtotal : {type:Number, required:true},
     pickupCharge : {type:Number, required:true},
     total : {type:Number, required:true},
-    dateTime : {type:Date, required:true},
+    dateTime : {type:Date},
     deliveryAddress : {
         streetAddress :{type:String, required:true},
         state : {type:String, required:true},
