@@ -1,1 +1,118 @@
 /* css */
+
+.container{
+    text-align: left;
+    top: 177px;
+    left: 108px;
+    width: 1295px !important;
+    height: 628px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    opacity: 1;
+    margin:65px;
+    margin-left: 75px;
+}
+.container-table{
+    border: 1px solid #E0E0E0;
+    border-radius: 2px;
+}
+.table-head .table-body{
+    display: flex;
+    align-items: center;
+    
+}
+
+.table-body{
+    padding-top: 10px;
+}
+.Quantity{
+    /* top: 260px;
+    left: 468px;
+    */
+    width: 63px;
+    height: 26px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 1px solid #5861AE;
+    border-radius: 2px;
+    padding: 0px!important;
+} 
+.productname{
+    
+    display:flex;
+    align-items: center;
+    margin:2px 0px; 
+    
+}
+.productdetails p{
+     padding-left:5px; 
+    margin-bottom:0 !important;
+} 
+
+.img{
+    padding-left:70px; 
+}  
+.buttons{
+    
+    margin-left: 81.5%;
+    margin-bottom: 26px;
+}
+.btn{
+    margin:0px 19px;
+    
+}
+th{
+    align-items: center;
+}
+.sidebar {
+    
+    padding: 0;
+    width: 50px;
+    background-color: #5861AE;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+  }
+  
+  .sidebar a {
+    display: block;
+    color: black;
+    padding: 16px;
+    text-decoration: none;
+  }
+   
+  .sidebar a.active {
+    background-color:white;
+    color:#5861AE
+  }
+  
+  .sidebar a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+  }
+.show{
+    text-align: center;
+    /* display:block; */
+    /* top: 257px;
+    left: 1305px; */
+    width: 81px;
+    height: 32px;
+    border: 1px solid #5861AE;
+    border-radius: 4px;
+    opacity: 1;
+}
+.hide{
+    display:none !important;
+
+}
+.changetoblue{
+    background: #5861AE;
+}
+.fixed-bottom{
+    padding: 0;
+    width:100%;
+    height:45px;
+    background-color:black;
+    position: fixed;
+    /* text-align: center !important; */
+    color: #FFFFFF;
+    overflow:hidden;
+}
