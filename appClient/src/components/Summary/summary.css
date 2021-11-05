@@ -73,6 +73,8 @@
   padding: 20px;
 }
 .order-details-heading {
+  display: flex;
+  justify-content: left;
   margin: 10px;
 }
 .move-right {
@@ -160,4 +162,12 @@
   border-radius: 50%;
   display: inline-block;
   margin-top: 5px;
+}
+.show {
+  height: auto !important;
+  width: auto !important;
+}
+.align-left {
+  display: flex;
+  text-align: left !important;
 }
