@@ -1,7 +1,46 @@
 import './landing-page.css'
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router ,Switch, Route, Link,useHistory } from "react-router-dom";
+const axios = require('axios');
 function LandingPage() {
+
+  var historyobj=useHistory();
+  const useFormInput = initialValue => {
+      const [value, setValue] = useState(initialValue);
+      
+      const handleChange = e => {
+          setValue(e.target.value);
+      }
+      return {
+          value,
+          onChange: handleChange
+      }
+  }
+  const email = useFormInput('');
+  const password = useFormInput('');
+
+  let handleSubmit=function(event) {
+    try {
+        event.preventDefault();
+        console.log(email.value)
+        console.log(password.value)
+        axios.post('http://localhost:3005/api/v1/user/signin',{username:email.value,password:password.value})
+        .then(function (response) {
+            window.localStorage.setItem("Token",response.data.token)
+            console.log(response.data.token)
+            historyobj.push("/create")
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+    } catch (error) {
+        console.log(error)
+        alert("login Failed")
+        
+    }
+  }
+
     return (
       <div className="container">
         <div className="row">
@@ -18,14 +57,14 @@ function LandingPage() {
           </div>
           <div className="col bg-light">
                <h2 className="text-primary pt-5" style={{marginLeft:"-430px"}}>SIGN IN</h2><br/>
-               <form>
+               <form onSubmit={handleSubmit}>
                     <div className="form-group">
                       <label className="text-primary"style={{marginLeft:"-440px"}}>Phone/Email</label><br/><br/>
-                      <input type="email" className="form-control"  placeholder="Phone/Email"></input>
+                      <input  {...email} type="email" className="form-control"  placeholder="Phone/Email"></input>
                     </div><br/>
                     <div className="form-group">
                       <label className="text-primary"style={{marginLeft:"-460px"}}>Password</label><br/><br/>
-                      <input type="password" className="form-control" placeholder="Password"></input>
+                      <input {...password} type="password" className="form-control" placeholder="Password"></input>
                     </div>
                     <a className="text-primary"style={{marginLeft:"380px"}}>Forget Password?</a>
                     <br/>

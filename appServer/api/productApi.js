@@ -3,7 +3,6 @@ const mongoose=require("mongoose");
 const router=express.Router();
 const middleware=require("../util/middleware")
 const productModel=require("../model/product");
-const cors=require('cors')
 
 // productModel.collection.insertMany([
 //     {
