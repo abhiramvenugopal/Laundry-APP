@@ -4,25 +4,40 @@
     text-align: left;
     top: 177px;
     left: 108px;
-    width: 1295px !important;
-    height: 628px;
+    width: 1500px !important;
+    /* height: 628px; */
     background: #FFFFFF 0% 0% no-repeat padding-box;
     opacity: 1;
     margin:65px;
     margin-left: 75px;
+    overflow: hidden;
+    margin-top: 0px!important;
 }
+
 .container-table{
     border: 1px solid #E0E0E0;
     border-radius: 2px;
+    margin:0% 0%;
+    margin-bottom: 2rem;
 }
 .table-head .table-body{
     display: flex;
     align-items: center;
     
 }
-
 .table-body{
-    padding-top: 10px;
+    max-height: 'calc(100vh - 210px)';
+    overflow-y: 'auto'
+}
+
+.table td, .table th{
+    vertical-align: middle!important;
+    padding: 4px !important;
+
+    
+}
+.table td{
+    border-top:none
 }
 .Quantity{
     /* top: 260px;
@@ -45,17 +60,25 @@
 .productdetails p{
      padding-left:5px; 
     margin-bottom:0 !important;
+    vertical-align: initial!important;
+
 } 
 
-.img{
-    padding-left:70px; 
+.imagescolumn{
+    display:flex;
 }  
-.buttons{
-    
-    margin-left: 81.5%;
-    margin-bottom: 26px;
+.img{
+    padding-left: 4.5vw;
 }
-.btn{
+.buttons{
+    width:initial;
+    margin-bottom:5%;
+    margin-top: 0%;
+    float: right;
+    
+
+}
+.button{
     margin:0px 19px;
     
 }
@@ -103,6 +126,10 @@ th{
     display:none !important;
 
 }
+.hidebuttons{
+    display:none !important;
+    margin-bottom: 8%;
+}
 .changetoblue{
     background: #5861AE;
 }
@@ -116,3 +143,38 @@ th{
     color: #FFFFFF;
     overflow:hidden;
 }
+
+.fixed-bottom{
+    margin-top: 5px;
+}
+.display{
+    padding: 0 !important;
+    display: initial;
+}
+.search{
+    float: right;
+} 
+.searchicon{
+    background-color: #FFFFFF;
+    border:none;
+    border-bottom: 1px solid;
+}
+.inputsearch{
+    background-color: #FFFFFF;
+    border:none;
+    width: 80% !important;
+    border-bottom: 1px solid;
+}
+
+
+
+
+ @media (min-width: 1200px){}
+.container {
+    max-width: 93%;
+} 
+@media (min-width: 750px){}
+.container {
+    max-width: 93%;
+} 
+
