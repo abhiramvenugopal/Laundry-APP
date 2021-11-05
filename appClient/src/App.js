@@ -14,13 +14,12 @@ function App() {
       <Router>
         <div>
           <Switch>
-                <Route exact path='/'><Nav/><LandingPage/><Footer/></Route>
-                <Route exact path='/Register'><Nav/><Register/><Footer/></Route>
-                  <Route exact path='/'> <LandingPage/> </Route>
+                  <Route exact path='/'><Nav/><LandingPage/><Footer/></Route>
+                  <Route exact path='/Register'><Nav/><Register/><Footer/></Route>
                   <Route exact path='/past'> <PastOrder/> </Route>  
                   <Route exact path='/summary'> <Summary/> </Route>
 
-                  <Route exact path='/create'> <CreatePage/>  </Route>
+                  <Route exact path='/create'><Nav/><CreatePage/></Route>
                   {/* <Route exact path='/post' component={Nav}/> */}
           </Switch>
         </div>

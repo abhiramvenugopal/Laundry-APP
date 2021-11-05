@@ -10,7 +10,6 @@ function Register()
     const [pincode,setPincode]=useState("");
     const [email,setEmail]=useState("");
     const [state,setState]=useState("");
-    const [address,setAddress]=useState("");
     const [password,setPassword]=useState("");
     const [streetAddress,setStreetAddress]=useState("");
     const history=useHistory();
@@ -18,7 +17,7 @@ function Register()
   async function signUP(event){
       event.preventDefault()
       let address=[{streetAddress,state,district,pincode}]
-      let item={name,email,phone,address,password}
+      let item={name,phone,email,address,password}
       console.log(item)
 
       let result= await fetch("http://localhost:3005/api/v1/user/register",{
@@ -73,7 +72,7 @@ function Register()
                       <input type="text"value={state} onChange={(e)=>setState(e.target.value)} className="form-control"  placeholder=""></input>
 
                       <label className="text-primary"style={{marginLeft:"-330px"}}>Address</label><br/>
-                      <input type="text"value={address} onChange={(e)=>setAddress(e.target.value)} className="form-control"  placeholder=""></input>
+                      <input type="text"value={streetAddress} onChange={(e)=>setStreetAddress(e.target.value)} className="form-control"  placeholder=""></input>
 
                       <label className="text-primary"style={{marginLeft:"-330px"}}>Password</label><br/>
                       <input type="Password"value={password} onChange={(e)=>setPassword(e.target.value)} className="form-control"  placeholder=""></input>

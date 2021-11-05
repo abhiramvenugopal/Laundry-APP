@@ -3,7 +3,6 @@ const mongoose=require("mongoose");
 const router=express.Router();
 const middleware=require("../util/middleware")
 const productModel=require("../model/product");
-const cors=require('cors')
 
 // productModel.collection.insertMany([
 //     {
@@ -79,10 +78,6 @@ const cors=require('cors')
 //     console.log(error)      // Failure
 // });
 
-
-router.use(cors({
-    origin:'http://localhost:3000'
-}))
 // router.use("/",middleware)
 
 router.get('/products',async function(req,res){
