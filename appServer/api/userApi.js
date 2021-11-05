@@ -34,6 +34,7 @@ router.post('/signin',(req,res)=>{
 })
 router.post("/register",async function(req,res){
     let reqObject={...req.body}
+    console.log(reqObject)
     try {
         bcrypt.hash(reqObject.password, 10,async function(err, hash) {
             if(err){
