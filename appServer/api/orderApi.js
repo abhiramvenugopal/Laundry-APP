@@ -3,16 +3,31 @@ const mongoose=require("mongoose");
 const router=express.Router();
 const middleware=require("../util/middleware")
 const orderModel=require("../model/order")
+const counterModel=require("../model/counter")
 
-router.use("/",middleware)
+ router.use("/",middleware)
 
 router.post('/create',async function(req,res){
     try{
+        let count
+        await counterModel.updateOne({id:"counter"},{$inc:{count:1}})
+        counterModel.findOne({}).then(
+            async (response)=>{
+                count=response.count
+                const data={...req.body,user:req.user,dateTime:new Date(),orderId:("ORD"+count)}
+                let order=await orderModel.create(data)
+                res.status(200).json({status:"success",order})
+            },
+            (err)=>{
+                res.status(500).json({
+                    status:"failed",
+                    message:err
+                })
+            }
+        )
+        
 
-        const data={...req.body,user:req.user}
-        let order=await orderModel.create(data)
-        res.status(200).json({status:"success",order})
-        console.log(data)
+        
     
     }
     catch(err){

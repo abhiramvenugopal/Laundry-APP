@@ -79,10 +79,6 @@ const cors=require('cors')
 //     console.log(error)      // Failure
 // });
 
-
-router.use(cors({
-    origin:'http://localhost:3000'
-}))
 // router.use("/",middleware)
 
 router.get('/products',async function(req,res){

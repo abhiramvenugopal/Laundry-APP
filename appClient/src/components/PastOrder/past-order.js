@@ -1,6 +1,9 @@
 import './past-order.css'
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import eyeIcon from "../../assets/img/eyeicon.svg"
+import Summary from "../Summary/summary";
+import axios from "axios";
+
 
 function PastOrder() {
     const [headings, setheadings] = useState(["Order Id", "Order Date & Time", "Store Location", "City" ,"Store Phone","Total Items","Price","Status"," -- ", "view"]);
@@ -115,6 +118,25 @@ function PastOrder() {
     
     ]
     const [orders, setOrders] = useState(val);
+    const [summary, setSummary] = useState(false);
+
+    const getData=()=>{
+        axios.get('http://localhost:3005/api/v1/order/orders')
+        .then(function (response) {
+            // this.setState({posts:response.data.posts.reverse()})
+            console.log(response.data)
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+    }
+
+    useEffect(() => {
+        getData()
+      });
+    
+
     return (
         <div>
             <table className="table">
@@ -131,7 +153,7 @@ function PastOrder() {
 
                     {orders.map((order,index)=>{
                         return(
-                            <tr key={index}>
+                            <tr key={index} onClick={()=>{setSummary(true)}}>
                                 <th scope="row">{order.orderId}</th>
                                 <td>{order.dateTime}</td>
                                 <td>{order.storeAddress.address}</td>
@@ -143,12 +165,11 @@ function PastOrder() {
                                 <td> cancel </td>
                                 <td><img src={eyeIcon} alt="error" /></td>
                             </tr>
-
                         )
                     })}
                 </tbody>
             </table>
-
+            { summary && <Summary changeParentval={()=>{setSummary(false)}} />}
                 
         </div>
       
