@@ -21,15 +21,16 @@ import blueiron from "../../assets/img/blue-iron.svg"
 import bluepack from "../../assets/img/blue-bleach.svg"
 import bluetowel from '../../assets/img/bluetowel.svg'
 import trademark from '../../assets/img/trademark.svg'
-
+import Summary from '../Summary/summary'
 
 
 function CreateOrder(){   
     const icons=[shirt,tshirt,trousers,jeans,boxers,joggers,others] 
+    const types=['Shirt','Tshirt','Trousers','Jeans','Boxers','Joggers','Others']
     const [costs,setCosts]=useState([[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]])
     const [color,setColor]=useState(['black','black','black','black','black','black','black'])
     const [image,setImage]=useState([[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing]])
-    const orders=[{quantity:Number,amount:Number,services:String,type:String}]
+    
     const [products,setProducts]=useState([])
 
     useEffect(()=>{
@@ -47,25 +48,43 @@ function CreateOrder(){
     },[])
 
 const handleSubmit=()=>{
-    
+    var products=[]
+    var finalcost=0
     for(let i=0; i<costs.length;i++){
-        var service=''
-        if(costs[i][0]>0 && costs[i][0]>0){
+        var total=0
+        var service=[]
+        if(costs[i][0]>0 && costs[i][1]>0){
+            total+=costs[i][0]*costs[i][1]
+            finalcost+=total
             if(costs[i][2]!==0){
+                service.push('washing')
             }
             if(costs[i][3]!==0){
-                service+=' ironing'
+                service.push('ironing')
             }
             if(costs[i][4]!==0){
-                service+=' folding'
+                service.push('folding')
             }
             if(costs[i][5]!==0){
-                service+=' packing'
+                service.push('packing')
             }
-            orders.push({quantity:costs[i][0],amount:costs[i][1],services:service}) 
+            products.push({
+                "name":types[i],
+                "quantity":costs[i][0],
+                "serviseTypes":service,
+                "price":costs[i][1]
+
+            })
         }
-    console.log(orders)
     }
+    const orders={
+        "status":[],
+        "products":products,
+        "subtotal":finalcost,
+        "pickupCharge":90,
+        "total":finalcost+90
+    }   
+    console.log(orders)
 
 }
 
@@ -80,6 +99,13 @@ const handlereset=(e)=>{
     setColor(changeColor)
     setImage(images)
 
+}
+const handleCancle=()=>{
+    const amount=[[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]
+    setCosts(amount)
+    setColor(['black','black','black','black','black','black','black'])
+    setImage([[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing]])
+    
 }
 
 const handleWash=(e)=>{
@@ -215,10 +241,13 @@ const handleQuantity=(e)=>{
                 <a href="/"><img src={list}alt="home"></img></a>
             </div>
             <div className="container">
-                <h3 style={{"float":"left" , "marginBottom":"3%"}}>Create Order</h3>
-                
-                <input style={{"float":"right","marginBottom":"3%" ,"border":"none","borderBottom":"1px solid"}} type='search'  placeholder="search"/>
-                <button style={{"marginLeft":"70.5%","background":"white","border":"none","borderBottom":"1px solid"}}><img src={search} alt="not found" width="14.5" height="14"/></button>
+                <div className="headings">
+                    <h3 style={{"float":"left" , "marginBottom":"3%"}}>Create Order</h3>
+                <div className="search">    
+                    <button className="searchicon"  ><img src={search} alt="not found" width="14.5" height="14"/></button>
+                    <input className="inputsearch"  type='search' />
+                </div>
+                </div>
                 <table className="table table-hover container-table">
                     <thead className="table-dark thead table-head">
                         <tr>
@@ -233,7 +262,7 @@ const handleQuantity=(e)=>{
                         {Object.values(products).map((each,ind)=>{
                             return(            
                                 <tr >
-                                    <th scope="row">
+                                    <th className="trow"  scope="row">
                                         <td className="productname">
                                             <div>
                                                 <img src={icons[ind]} alt="img"  width="45" height="45" ></img>
@@ -246,18 +275,19 @@ const handleQuantity=(e)=>{
                                     </th>
                                     <th scope="row"><td><input onChange={handleQuantity} className="Quantity" type="number"  min="0" name={ind}></input></td></th>
                                     <th scope="row">
-                                    <td>
+                                    <td><div className="imagescolumn">
                                         <img onClick={handleWash} style={{"color":color[ind]}}   src={image[ind][0]} alt="img" name={ind}></img>
                                         <img onClick={handleFold}   className="img" src={image[ind][1]} alt="img"   name={ind} ></img>
                                         <img onClick={handlePress}  className="img" src={image[ind][2]} alt="img"  name={ind} ></img>
                                         <img onClick={handdlePack}  className="img" src={image[ind][3]} alt="img"  name={ind}></img>
+                                    </div>
                                     </td>
                                     </th>
                                         
                                         <th scope="row"><td className={(costs[ind][1]>0?"display":"hide")} >{costs[ind][0]}x{costs[ind][1]}=<b style={{color:'#5861AE'}}>{costs[ind][0]*costs[ind][1]}</b></td>
                                         <td className={(costs[ind][1]>0?"hide":"display")}>--</td></th>
                                     <th scope="row">
-                                        <button name={ind} onClick={handlereset} type="submit" className={(costs[ind][1]>0 ? " btn btn-outline-primary":"hide" )}>reset</button>
+                                        <button name={ind} onClick={handlereset} type="submit" className={(costs[ind][1]>0 ? " btn btn-outline-primary button":"hide" )}>reset</button>
                                         <td></td>
                                     </th>
                                 </tr>
@@ -266,13 +296,13 @@ const handleQuantity=(e)=>{
                         </tbody>
                         
                 </table>  
-                <div className={((costs[0][1] && costs[0][0]) || (costs[1][1] && costs[1][0]) ?"buttons":"hide")}>
-                            <button  className="btn btn-outline-primary cancel">cancel</button>
-                            <button type="button" onClick={handleSubmit} className="btn btn-primary proceed" >proceed</button>
+                <div className={((costs[0][0]) && costs[0][1]) || (costs[1][0] && costs[1][1])||(costs[2][0] && costs[2][1])||(costs[3][0] && costs[3][1])||(costs[4][0] && costs[4][1])|| (costs[5][0] && costs[5][1])?"buttons":"hidebuttons" }>
+                            <button onClick={handleCancle}  className="btn btn-outline-primary cancel button">cancel</button>
+                            <button type="button" onClick={handleSubmit} className="btn btn-primary proceed button" >proceed</button>
                         </div>
             </div>
             <nav className="navbar navbar-inverse fixed-bottom ">
-                <p className="navbar-brand" style={{'textAlign':"center",'width':"100%",'margin':"0px"}} >2021 ©  Laundry</p>
+                <p className="navbar-brand bottomnavbar" style={{'textAlign':"center",'width':"100%",'margin':"0px"}} >2021 ©  Laundry</p>
             </nav>
         </div>
     )
