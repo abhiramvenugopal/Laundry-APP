@@ -13,8 +13,11 @@ class Summary extends React.Component{
         }
     }
     
+    componentDidMount(){
+        this.setState({show:true})
+    }
     render(){
-        const pastOrder=true
+        const pastOrder=false
         const address=[
             {
                 "addressType":"Home",
@@ -115,17 +118,18 @@ class Summary extends React.Component{
         }
             
         return(
-            <div>
-               <Button variant="primary" onClick={()=>{this.setState({show:true})}}>
-                    Launch
-                </Button>
-
-                <Modal size="lg" dialogClassName="right_modal modal-dialog modal-content" show={this.state.show} onHide={()=>{this.setState({show:false})}}>
+                <Modal size="lg" dialogClassName="right_modal modal-dialog modal-content" show={this.state.show} onHide={()=>{
+                                                                                                                                this.setState({show:false})
+                                                                                                                                this.props.changeParentval()
+                                                                                                                                }}>
                     <Modal.Header className="model-header" >
                         <Modal.Title>
                             <h2>Summary</h2>
                             <div className="close-button">
-                                <button className="close-button-inline" onClick={()=>{this.setState({show:false})}}>X</button>
+                                <button className="close-button-inline" onClick={()=>{
+                                                                                        this.setState({show:false})
+                                                                                        this.props.changeParentval()
+                                                                                        }}>X</button>
                             </div>
 
                         </Modal.Title>
@@ -236,12 +240,15 @@ class Summary extends React.Component{
 
                         </div>
                         <div className="address-choice-div">
-                            <span>Address</span>
+                            <div className="align-left">
+                                <span>Address</span>
+                            </div>
+                            
                             { !pastOrder && 
                             <div className="address-choice">
                                 {address.map((addr,index)=>{
                                     return(
-                                        <div className="p-2 card  custom-card col-md-4" onClick={()=>{this.setState({addressSelected:index})}}>
+                                        <div key={index} className="p-2 card  custom-card col-md-4" onClick={()=>{this.setState({addressSelected:index})}}>
                                             <div className="p-0 m-0 card-body">
                                                 {/* <h5 className="card-title">{addr.addressType}</h5> */}
                                                 <div className="card-title">
@@ -250,7 +257,7 @@ class Summary extends React.Component{
                                                     
                                                 </div>
                                                 
-                                                <p className="card-text">{addr.streetAddress},{addr.district},{addr.state},{addr.pincode}</p>
+                                                <p className="card-text align-left">{addr.streetAddress},{addr.district},{addr.state},{addr.pincode}</p>
                                             </div>
                                         </div>
 
@@ -265,7 +272,7 @@ class Summary extends React.Component{
                                             <div className="card-title">
                                                 <h5>{values.deliveryAddress.addressType}</h5>
                                             </div>
-                                            <p className="card-text">{values.deliveryAddress.streetAddress},{values.deliveryAddress.district},{values.deliveryAddress.state},{values.deliveryAddress.pincode}</p>
+                                            <p className="card-text align-left">{values.deliveryAddress.streetAddress},{values.deliveryAddress.district},{values.deliveryAddress.state},{values.deliveryAddress.pincode}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -275,11 +282,17 @@ class Summary extends React.Component{
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        {(pastOrder && values.status.length===0) && <button className="btn custom-btn-cancel" onClick={()=>{this.setState({show:false})}}>Cancel</button>}
-                        {(!pastOrder) && <button className="btn custom-btn-confirm" onClick={()=>{this.setState({show:false})}}>Confirm</button>}
+                        {(pastOrder && values.status.length===0) && <button className="btn custom-btn-cancel" onClick={()=>{
+                                                                                                                            this.setState({show:false})
+                                                                                                                            this.props.changeParentval()
+                                                                                                                            }}>Cancel</button>}
+                        {(!pastOrder) && <button className="btn custom-btn-confirm" onClick={()=>{
+                                                                                                    this.setState({show:false})
+                                                                                                    this.props.changeParentval()
+                                                                                                    
+                                                                                                }}>Confirm</button>}
                     </Modal.Footer>
                 </Modal>
-            </div>
         );
     }
 }

@@ -4,10 +4,11 @@ const Schema=mongoose.Schema
 const orderSchema= new Schema({
     orderId : {type:String, required:true,unique:true},
     user:{type:Schema.Types.ObjectId,ref:"users"},
+    active:{type:Boolean,default:true},
     status : [
         {
             statusCode: {type:String, required:true},
-		    date: {type:Date},
+		    date: {type:Date,default:new Date()},
         }
     ],
     products : [
@@ -21,7 +22,7 @@ const orderSchema= new Schema({
     subtotal : {type:Number, required:true},
     pickupCharge : {type:Number, required:true},
     total : {type:Number, required:true},
-    dateTime : {type:Date},
+    dateTime : {type:Date,default:new Date()},
     deliveryAddress : {
         streetAddress :{type:String, required:true},
         state : {type:String, required:true},
