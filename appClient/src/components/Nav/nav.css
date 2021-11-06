@@ -1,3 +1,6 @@
-.nav-link{
-    margin: 30px;
+.nav-link {
+  margin: 30px;
+}
+.custom-nav {
+  max-height: 8vh;
 }

@@ -22,6 +22,7 @@ import bluepack from "../../assets/img/blue-bleach.svg"
 import bluetowel from '../../assets/img/bluetowel.svg'
 import trademark from '../../assets/img/trademark.svg'
 import Summary from '../Summary/summary'
+import PastOrder from "../PastOrder/past-order";
 
 
 function CreateOrder(){   
@@ -30,8 +31,11 @@ function CreateOrder(){
     const [costs,setCosts]=useState([[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]])
     const [color,setColor]=useState(['black','black','black','black','black','black','black'])
     const [image,setImage]=useState([[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing],[wash,iron,towel,packing]])
-    
+    const [summary, setSummary] = useState(false);
     const [products,setProducts]=useState([])
+    const [orders, setOrders] = useState({});
+    const [active, setActive] = useState("create");
+    const [create, setCreate] = useState(false);
 
     useEffect(()=>{
         axios({
@@ -77,14 +81,15 @@ const handleSubmit=()=>{
             })
         }
     }
-    const orders={
+    setOrders({
         "status":[],
         "products":products,
         "subtotal":finalcost,
         "pickupCharge":90,
         "total":finalcost+90
-    }   
+    })   
     console.log(orders)
+    setSummary(true)
 
 }
 
@@ -237,70 +242,81 @@ const handleQuantity=(e)=>{
         <div>
             <div className="sidebar">
                 <a href="/"><img src={home}alt="home"></img></a>
-                <a  className="active" href="/active"><img src={more}alt="home"></img></a>
-                <a href="/"><img src={list}alt="home"></img></a>
+                <a onClick={()=>{setActive("create")}} className={(active==="create")? "active": " "}><img src={more}alt="home"></img></a>
+                <a onClick={()=>{setActive("past")}} className={(active==="past")? "active": " "} ><img src={list}alt="home"></img></a>
             </div>
-            <div className="container">
-                <div className="headings">
-                    <h3 style={{"float":"left" , "marginBottom":"3%"}}>Create Order</h3>
-                <div className="search">    
-                    <button className="searchicon"  ><img src={search} alt="not found" width="14.5" height="14"/></button>
-                    <input className="inputsearch"  type='search' />
-                </div>
-                </div>
-                <table className="table table-hover container-table">
-                    <thead className="table-dark thead table-head">
-                        <tr>
-                            <th scope="col">Product Types</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">WashType</th>
-                            <th scope="col">Price</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody  className="table-body">
-                        {Object.values(products).map((each,ind)=>{
-                            return(            
-                                <tr >
-                                    <th className="trow"  scope="row">
-                                        <td className="productname">
-                                            <div>
-                                                <img src={icons[ind]} alt="img"  width="45" height="45" ></img>
-                                            </div>
-                                            <div className="productdetails"  >
-                                                <p style={{"color":color[ind]}}>{each.productType}</p>
-                                                <p  style={{"fontSize":"10px"}}>{each.description}</p>
-                                            </div>
+            { active==="create" &&
+            <div>
+            { create===false &&  <div className="create-order-btn-div" > <button className="create-order-btn" onClick={()=>{setCreate(true)}}> create </button></div> }
+
+            { create && <div>
+                <div className="container">
+                    <div className="headings">
+                        <h3 style={{"float":"left" , "marginBottom":"3%"}}>Create Order</h3>
+                    <div className="search">    
+                        <button className="searchicon"  ><img src={search} alt="not found" width="14.5" height="14"/></button>
+                        <input className="inputsearch"  type='search' />
+                    </div>
+                    </div>
+                    <table className="table table-hover container-table">
+                        <thead className="table-dark thead table-head">
+                            <tr>
+                                <th scope="col">Product Types</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">WashType</th>
+                                <th scope="col">Price</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody  className="table-body">
+                            {Object.values(products).map((each,ind)=>{
+                                return(            
+                                    <tr>
+                                        <th className="trow"  scope="row">
+                                            <td className="productname">
+                                                <div>
+                                                    <img src={icons[ind]} alt="img"  width="45" height="45" ></img>
+                                                </div>
+                                                <div className="productdetails"  >
+                                                    <p style={{"color":color[ind]}}>{each.productType}</p>
+                                                    <p  style={{"fontSize":"10px"}}>{each.description}</p>
+                                                </div>
+                                            </td>
+                                        </th>
+                                        <th scope="row"><td><input onChange={handleQuantity} className="Quantity" type="number"  min="0" name={ind}></input></td></th>
+                                        <th scope="row">
+                                        <td><div className="imagescolumn">
+                                            <img onClick={handleWash} style={{"color":color[ind]}}   src={image[ind][0]} alt="img" name={ind}></img>
+                                            <img onClick={handleFold}   className="img" src={image[ind][1]} alt="img"   name={ind} ></img>
+                                            <img onClick={handlePress}  className="img" src={image[ind][2]} alt="img"  name={ind} ></img>
+                                            <img onClick={handdlePack}  className="img" src={image[ind][3]} alt="img"  name={ind}></img>
+                                        </div>
                                         </td>
-                                    </th>
-                                    <th scope="row"><td><input onChange={handleQuantity} className="Quantity" type="number"  min="0" name={ind}></input></td></th>
-                                    <th scope="row">
-                                    <td><div className="imagescolumn">
-                                        <img onClick={handleWash} style={{"color":color[ind]}}   src={image[ind][0]} alt="img" name={ind}></img>
-                                        <img onClick={handleFold}   className="img" src={image[ind][1]} alt="img"   name={ind} ></img>
-                                        <img onClick={handlePress}  className="img" src={image[ind][2]} alt="img"  name={ind} ></img>
-                                        <img onClick={handdlePack}  className="img" src={image[ind][3]} alt="img"  name={ind}></img>
-                                    </div>
-                                    </td>
-                                    </th>
-                                        
-                                        <th scope="row"><td className={(costs[ind][1]>0?"display":"hide")} >{costs[ind][0]}x{costs[ind][1]}=<b style={{color:'#5861AE'}}>{costs[ind][0]*costs[ind][1]}</b></td>
-                                        <td className={(costs[ind][1]>0?"hide":"display")}>--</td></th>
-                                    <th scope="row">
-                                        <button name={ind} onClick={handlereset} type="submit" className={(costs[ind][1]>0 ? " btn btn-outline-primary button":"hide" )}>reset</button>
-                                        <td></td>
-                                    </th>
-                                </tr>
-                            )
-                        })}
-                        </tbody>
-                        
-                </table>  
-                <div className={((costs[0][0]) && costs[0][1]) || (costs[1][0] && costs[1][1])||(costs[2][0] && costs[2][1])||(costs[3][0] && costs[3][1])||(costs[4][0] && costs[4][1])|| (costs[5][0] && costs[5][1])?"buttons":"hidebuttons" }>
-                            <button onClick={handleCancle}  className="btn btn-outline-primary cancel button">cancel</button>
-                            <button type="button" onClick={handleSubmit} className="btn btn-primary proceed button" >proceed</button>
-                        </div>
-            </div>
+                                        </th>
+                                            
+                                            <th scope="row"><td className={(costs[ind][1]>0?"display":"hide")} >{costs[ind][0]}x{costs[ind][1]}=<b style={{color:'#5861AE'}}>{costs[ind][0]*costs[ind][1]}</b></td>
+                                            <td className={(costs[ind][1]>0?"hide":"display")}>--</td></th>
+                                        <th scope="row">
+                                            <button name={ind} onClick={handlereset} type="submit" className={(costs[ind][1]>0 ? " btn btn-outline-primary button":"hide" )}>reset</button>
+                                            <td></td>
+                                        </th>
+                                    </tr>
+                                )
+                            })}
+                            </tbody>
+                            
+                    </table>  
+                    <div className={((costs[0][0]) && costs[0][1]) || (costs[1][0] && costs[1][1])||(costs[2][0] && costs[2][1])||(costs[3][0] && costs[3][1])||(costs[4][0] && costs[4][1])|| (costs[5][0] && costs[5][1])?"buttons":"hidebuttons" }>
+                                <button onClick={handleCancle}  className="btn btn-outline-primary cancel button">cancel</button>
+                                <button type="button" onClick={handleSubmit} className="btn btn-primary proceed button" >proceed</button>
+                            </div>
+                </div>
+            </div> }
+            </div>}
+            {
+                active==="past" && <PastOrder/>
+            }
+            { summary && <Summary order={orders} changeParentval={()=>{setSummary(false)}} />}
             <nav className="navbar navbar-inverse fixed-bottom ">
                 <p className="navbar-brand bottomnavbar" style={{'textAlign':"center",'width':"100%",'margin':"0px"}} >2021 ©  Laundry</p>
             </nav>
