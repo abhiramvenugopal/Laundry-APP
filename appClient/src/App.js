@@ -14,8 +14,8 @@ function App() {
       <Router>
         <div>
           <Switch>
-                  <Route exact path='/'><Nav/><LandingPage/><Footer/></Route>
-                  <Route exact path='/Register'><Nav/><Register/><Footer/></Route>
+                  <Route exact path='/'><LandingPage/></Route>
+                  <Route exact path='/Register'><Register/></Route>
                   <Route exact path='/past'> <PastOrder/> </Route>  
                   <Route exact path='/summary'> <Summary/> </Route>
 

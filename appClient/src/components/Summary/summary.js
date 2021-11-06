@@ -161,40 +161,40 @@ class Summary extends React.Component{
                             <div className="custom-row-container-first">
                                 <div className="col">
                                     <div className="row">
-                                    {(values.status.length>=1) ? <img src={tick} alt="error" /> : <span className="dot"></span> } 
+                                    {(this.props.order.status.length>=1) ? <img src={tick} alt="error" /> : <span className="dot"></span> } 
                                         <span style={{fontSize: "small",marginLeft : "10px"}}>Picked Up</span>
                                     </div>
-                                    { (values.status.length>=1) && <span style={{fontSize: "10px"}}>12-Oct-2021</span> }
+                                    { (this.props.order.status.length>=1) && <span style={{fontSize: "10px"}}>12-Oct-2021</span> }
                                 </div>
                             </div>
-                            <ProgressBar className="pro-bar" animated now={(values.status.length)*50} />
+                            <ProgressBar className="pro-bar" animated now={(this.props.order.status.length)*50} />
                             <div className="custom-row-container">
                                 <div className="col m-1">
                                     <div className="row">
-                                        {(values.status.length>=2) ? <img src={tick} alt="error" /> : <span className="dot"></span> } 
+                                        {(this.props.order.status.length>=2) ? <img src={tick} alt="error" /> : <span className="dot"></span> } 
                                         <span style={{fontSize: "small",marginLeft : "10px"}}>Washed</span>
                                     </div>
-                                    { (values.status.length>=2) && <span style={{fontSize: "10px"}}>12-Oct-2021</span> }
+                                    { (this.props.order.status.length>=2) && <span style={{fontSize: "10px"}}>12-Oct-2021</span> }
                                 </div>
                             </div>
-                            <ProgressBar className="pro-bar" animated now={(values.status.length<=2)? (values.status.length-1)*50 : 100 } />
+                            <ProgressBar className="pro-bar" animated now={(this.props.order.status.length<=2)? (this.props.order.status.length-1)*50 : 100 } />
                             <div className="custom-row-container">
                                 <div className="col">
                                     <div className="row">
-                                    {(values.status.length>=3) ? <img src={tick} alt="error" /> : <span className="dot"></span> } 
+                                    {(this.props.order.status.length>=3) ? <img src={tick} alt="error" /> : <span className="dot"></span> } 
                                         <span style={{fontSize: "small",marginLeft : "10px"}}>Ironed</span>
                                     </div>
-                                    { (values.status.length>=3) && <span style={{fontSize: "10px"}}>12-Oct-2021</span> }
+                                    { (this.props.order.status.length>=3) && <span style={{fontSize: "10px"}}>12-Oct-2021</span> }
                                 </div>
                             </div>
-                            <ProgressBar className="pro-bar" animated now={(values.status.length<=3)? (values.status.length-2)*50 : 100 } />
+                            <ProgressBar className="pro-bar" animated now={(this.props.order.status.length<=3)? (this.props.order.status.length-2)*50 : 100 } />
                             <div className="custom-row-container">
                                 <div className="col">
                                     <div className="row">
-                                    {(values.status.length>=4) ? <img src={tick} alt="error" /> : <span className="dot"></span> } 
+                                    {(this.props.order.status.length>=4) ? <img src={tick} alt="error" /> : <span className="dot"></span> } 
                                         <span style={{fontSize: "small",marginLeft : "10px"}}>Delivered</span>
                                     </div>
-                                    { (values.status.length>=4) && <span style={{fontSize: "10px"}}>12-Oct-2021</span> }
+                                    { (this.props.order.status.length>=4) && <span style={{fontSize: "10px"}}>12-Oct-2021</span> }
                                 </div>
                             </div>
                         </div>
@@ -205,7 +205,7 @@ class Summary extends React.Component{
                             </div>
                             <table className="table">
                                 <tbody>
-                                    {values.products.map((product,index)=>{
+                                    {this.props.order.products.map((product,index)=>{
                                         let washTypes=product.serviseTypes.join()
                                         return(
                                             <tr key={index}>
@@ -220,19 +220,19 @@ class Summary extends React.Component{
                                         <td></td>
                                         <td></td>
                                         <td className="move-right">Sub total:</td>
-                                        <td className="style-bold"> {values.subtotal} </td>
+                                        <td className="style-bold"> {this.props.order.subtotal} </td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td></td>
                                         <td className="move-right">Pickup Charges:</td>
-                                        <td className="style-bold"> {values.pickupCharge} </td>
+                                        <td className="style-bold"> {this.props.order.pickupCharge} </td>
                                     </tr>
                                     <tr className="total-cost-row">
                                         <td></td>
                                         <td></td>
                                         <td className="move-right">Total:</td>
-                                        <td> RS {values.total} </td>
+                                        <td> RS {this.props.order.total} </td>
                                     </tr>
                                     
                                 </tbody>
@@ -270,9 +270,9 @@ class Summary extends React.Component{
                                     <div className="p-2 card  custom-card col-md-4">
                                         <div className="p-0 m-0 card-body">
                                             <div className="card-title">
-                                                <h5>{values.deliveryAddress.addressType}</h5>
+                                                <h5>{this.props.order.deliveryAddress.addressType}</h5>
                                             </div>
-                                            <p className="card-text align-left">{values.deliveryAddress.streetAddress},{values.deliveryAddress.district},{values.deliveryAddress.state},{values.deliveryAddress.pincode}</p>
+                                            <p className="card-text align-left">{this.props.order.deliveryAddress.streetAddress},{this.props.order.deliveryAddress.district},{this.props.order.deliveryAddress.state},{this.props.order.deliveryAddress.pincode}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -282,7 +282,7 @@ class Summary extends React.Component{
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        {(pastOrder && values.status.length===0) && <button className="btn custom-btn-cancel" onClick={()=>{
+                        {(pastOrder && this.props.order.status.length===0) && <button className="btn custom-btn-cancel" onClick={()=>{
                                                                                                                             this.setState({show:false})
                                                                                                                             this.props.changeParentval()
                                                                                                                             }}>Cancel</button>}

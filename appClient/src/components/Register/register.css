@@ -1,0 +1,119 @@
+.footer-section {
+  margin: auto;
+  bottom: 1rem;
+  width: 100%;
+  max-height: 10vh;
+  display: flex;
+  justify-content: center;
+}
+
+.left-section {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.right-section {
+  background: #f8f9ff;
+  height: 80vh;
+  padding: 4vw;
+}
+.register-left-heading {
+  display: flex;
+  flex-direction: column;
+}
+.laundry-service-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: #5861ae;
+  font-weight: bolder;
+  font-size: 350%;
+}
+.left-sub-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 100%;
+  color: #565657;
+}
+.signin-button-div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  left: -19%;
+}
+.signin-button-container {
+  display: flex;
+  position: absolute;
+  bottom: 1rem;
+}
+.btn-div {
+  margin-top: 1vh;
+}
+.signin-btn {
+  color: #5861ae;
+  border-color: #5861ae;
+  border-width: 3px;
+  min-width: 120px;
+  width: 8vw;
+  background: white;
+  font-weight: bolder;
+}
+.signin-btn:hover {
+  background: #5861ae;
+  color: white;
+}
+.register-form-heading {
+  color: #5861ae;
+  font-size: xx-large;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.set-flex-start {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.custom-form-input {
+  border: none;
+  background: #f8f9ff;
+  border-bottom: 2px solid #77838f;
+}
+.custom-row-style {
+  margin-top: 5vh;
+}
+
+.register-btn {
+  color: white;
+  min-width: 120px;
+  width: 8vw;
+  min-height: 40px;
+  height: 5vh;
+  border-width: 3px;
+  background: #5861ae;
+  font-weight: bolder;
+  border-radius: 10%;
+}
+.register-btn:hover {
+  background: white;
+  color: #5861ae;
+  border-width: 3px;
+  font-weight: bolder;
+  border-color: #5861ae;
+}
+.custom-select {
+  margin-top: 0.5%;
+  background: #f8f9ff;
+  border: none;
+}
+.reg-btn-chk {
+  position: absolute;
+  bottom: 1rem;
+  justify-content: center;
+  width: 90%;
+  margin: auto;
+}

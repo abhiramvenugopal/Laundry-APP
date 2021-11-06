@@ -1,6 +1,6 @@
 import './footer.css'
 import React from 'react';
-function footer(){
+function Footer(){
     return(
         <div className="center text-primary">
             <hr/>
@@ -9,4 +9,4 @@ function footer(){
         </div>
     )
 }
-export default footer
+export default Footer

@@ -3,6 +3,7 @@ import React, { useState,useEffect } from 'react';
 import eyeIcon from "../../assets/img/eyeicon.svg"
 import Summary from "../Summary/summary";
 import axios from "axios";
+import search from "../../assets/img/searchicon.png";
 
 
 function PastOrder() {
@@ -139,36 +140,48 @@ function PastOrder() {
 
     return (
         <div>
-            <table className="table">
-                <thead className="table-dark">
-                    <tr>
-                        {headings.map((heading,index)=>{
-                            return(
-                                <th scope="col" key={index}>{heading}</th>
-                            )
-                        })}
-                    </tr>
-                </thead>
-                <tbody>
-
-                    {orders.map((order,index)=>{
-                        return(
-                            <tr key={index} onClick={()=>{setSummary(true)}}>
-                                <th scope="row">{order.orderId}</th>
-                                <td>{order.dateTime}</td>
-                                <td>{order.storeAddress.address}</td>
-                                <td>{order.storeAddress.location}</td>
-                                <td>{order.storeAddress.phone}</td>
-                                <td>10</td>
-                                <td>{order.total}</td>
-                                <td>{order.status[0].statusCode}</td>
-                                <td> cancel </td>
-                                <td><img src={eyeIcon} alt="error" /></td>
+            <div className="container">
+                    <div className="headings">
+                        <h3 style={{"float":"left" , "marginBottom":"3%"}}>Orders | {orders.length}</h3>
+                    <div className="search">    
+                        <button className="searchicon"  ><img src={search} alt="not found" width="14.5" height="14"/></button>
+                        <input className="inputsearch"  type='search' />
+                    </div>
+                    </div>
+                    <table className="table">
+                        <thead className="table-dark">
+                            <tr>
+                                {headings.map((heading,index)=>{
+                                    return(
+                                        <th scope="col" key={index}>{heading}</th>
+                                    )
+                                })}
                             </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+
+                            {orders.map((order,index)=>{
+                                return(
+                                    <tr key={index} onClick={()=>{setSummary(true)}}>
+                                        <th scope="row">{order.orderId}</th>
+                                        <td>{order.dateTime}</td>
+                                        <td>{order.storeAddress.address}</td>
+                                        <td>{order.storeAddress.location}</td>
+                                        <td>{order.storeAddress.phone}</td>
+                                        <td>10</td>
+                                        <td>{order.total}</td>
+                                        <td>{order.status[0].statusCode}</td>
+                                        <td> cancel </td>
+                                        <td><img src={eyeIcon} alt="error" /></td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                     
+                    
+                </div>
+            
             { summary && <Summary changeParentval={()=>{setSummary(false)}} />}
                 
         </div>
