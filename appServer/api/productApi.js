@@ -78,7 +78,7 @@ const productModel=require("../model/product");
 //     console.log(error)      // Failure
 // });
 
-// router.use("/",middleware)
+router.use("/",middleware)
 
 router.get('/products',async function(req,res){
     try{

@@ -1,6 +1,23 @@
 .nav-link {
-  margin: 30px;
+  display: flex;
+  padding-left: 4rem!important;
+  align-items: center;
 }
 .custom-nav {
   max-height: 8vh;
+}
+.text{
+  margin-left: 14vw;
+  font:caption;
+  margin-top: 1rem;
+  text-align: center !important; 
+  color:#5861AE;
+}
+.userIcon{
+  background-attachment: fixed;
+}
+.userdetails{
+  color: aliceblue;
+  background-color: #5861AE;
+  padding: 0.75vw;
 }
