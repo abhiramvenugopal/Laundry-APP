@@ -21,3 +21,13 @@
   width: 80% !important;
   border-bottom: 1px solid;
 }
+.table-cancel-btn {
+  border: none;
+  color: red;
+  background: transparent;
+  font-weight: bold;
+}
+.table-cancel-btn:hover {
+  color: white;
+  background: red;
+}

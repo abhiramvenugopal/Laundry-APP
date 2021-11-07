@@ -23,6 +23,8 @@ import bluetowel from '../../assets/img/bluetowel.svg'
 import trademark from '../../assets/img/trademark.svg'
 import Summary from '../Summary/summary'
 import PastOrder from "../PastOrder/past-order";
+import { Modal} from 'react-bootstrap';
+import tick from "../../assets/img/tick.svg"
 
 
 function CreateOrder(){   
@@ -36,6 +38,7 @@ function CreateOrder(){
     const [orders, setOrders] = useState({});
     const [active, setActive] = useState("create");
     const [create, setCreate] = useState(false);
+    const [success, setSuccess] = useState(false);
 
     useEffect(()=>{
         axios({
@@ -57,7 +60,9 @@ const handleSubmit=()=>{
     for(let i=0; i<costs.length;i++){
         var total=0
         var service=[]
+        var totalQuantity=0
         if(costs[i][0]>0 && costs[i][1]>0){
+            totalQuantity+=costs[i][0]
             total+=costs[i][0]*costs[i][1]
             finalcost+=total
             if(costs[i][2]!==0){
@@ -86,7 +91,8 @@ const handleSubmit=()=>{
         "products":products,
         "subtotal":finalcost,
         "pickupCharge":90,
-        "total":finalcost+90
+        "total":finalcost+90,
+        "totalQuantity":totalQuantity
     })   
     console.log(orders)
     setSummary(true)
@@ -283,7 +289,7 @@ const handleQuantity=(e)=>{
                                                 </div>
                                             </td>
                                         </th>
-                                        <th scope="row"><td><input onChange={handleQuantity} className="Quantity" type="number"  min="0" name={ind}></input></td></th>
+                                        <th scope="row"><td><input onChange={handleQuantity} className="Quantity" type="number"  min="1" name={ind}></input></td></th>
                                         <th scope="row">
                                         <td><div className="imagescolumn">
                                             <img onClick={handleWash} style={{"color":color[ind]}}   src={image[ind][0]} alt="img" name={ind}></img>
@@ -316,10 +322,43 @@ const handleQuantity=(e)=>{
             {
                 active==="past" && <PastOrder/>
             }
-            { summary && <Summary order={orders} changeParentval={()=>{setSummary(false)}} />}
+            { summary && <Summary successModal={()=>{setSuccess(true)}} pastOrder={false} order={orders} changeParentval={()=>{setSummary(false)}} />}
             <nav className="navbar navbar-inverse fixed-bottom ">
                 <p className="navbar-brand bottomnavbar" style={{'textAlign':"center",'width':"100%",'margin':"0px"}} >2021 ©  Laundry</p>
             </nav>
+                <Modal
+                    dialogClassName="modal-center"
+                    size="md"
+                    show={success}
+                    onHide={() => setSuccess(false)}
+                    aria-labelledby="example-modal-sizes-title-sm"
+                    centered
+                >
+                    <Modal.Header>
+                    <Modal.Title id="example-modal-sizes-title-sm">
+                    </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div>
+                            <img className="success-icon" src={tick} alt="error" />
+                        </div>
+                        <div className="success-message">
+                            <span>Your Order is </span>
+                            <span>Successfull</span>
+                        </div>
+                        <div className="success-message-two">
+                            <span>You can track the delivery in the</span>
+                            <span>"Orders" section</span>
+                        </div>
+                        <div>
+                            <button onClick={()=>{
+                                setSuccess(false)
+                                setActive("past")
+
+                            }} className="success-modal-button">Go to orders</button>
+                        </div>
+                    </Modal.Body>
+                </Modal>
         </div>
     )
 }

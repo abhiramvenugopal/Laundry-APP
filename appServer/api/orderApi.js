@@ -7,6 +7,30 @@ const counterModel=require("../model/counter")
 
  router.use("/",middleware)
 
+router.post('/cancel',async function(req,res){
+    try{
+        orderModel.updateOne({_id:req.body.id,user:req.user},{$set:{active:false}}).then(
+            (response)=>{
+                res.status(200).json({status:"success",response})
+            },
+            (err)=>{
+                res.status(500).json({
+                    status:"failed",
+                    message:err
+                })
+            }
+        )        
+    }
+    catch(err){
+        res.status(500).json({
+            status:"failed",
+            message:err
+        })
+    }
+    
+    
+})
+
 router.post('/create',async function(req,res){
     try{
         let count
