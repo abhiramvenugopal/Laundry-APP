@@ -22,16 +22,13 @@ import bluepack from "../../assets/img/blue-bleach.svg"
 import bluetowel from '../../assets/img/bluetowel.svg'
 import Summary from '../Summary/summary'
 import PastOrder from "../PastOrder/past-order";
-<<<<<<< HEAD
 import { Modal} from 'react-bootstrap';
 import tick from "../../assets/img/tick.svg"
 
-=======
 import whitemore from "../../assets/img/whitemore.svg"
 import activelist from "../../assets/img/activelist.svg"
 import activehome from "../../assets/img/activehome.svg"
 import { getToken } from "../../utils/authOperations";
->>>>>>> main
 
 function CreateOrder(){   
     const icons=[shirt,tshirt,trousers,jeans,boxers,joggers,others] 
@@ -44,15 +41,12 @@ function CreateOrder(){
     const [orders, setOrders] = useState({});
     const [active, setActive] = useState("create");
     const [create, setCreate] = useState(false);
-<<<<<<< HEAD
     const [success, setSuccess] = useState(false);
 
-=======
     const [moreicon,setMoreicon]=useState(more)
     const [listicon,setListicon]=useState(list)
     const [homeIcon,setHomeicon]=useState(home)
     
->>>>>>> main
     useEffect(()=>{
         let token=getToken()
         let header={Authorization:"bearer "+token}
