@@ -19,6 +19,7 @@ const orderSchema= new Schema({
             price : {type:Number, required:true}
         }
     ],
+    totalQuantity:{type:Number,required:true},
     subtotal : {type:Number, required:true},
     pickupCharge : {type:Number, required:true},
     total : {type:Number, required:true},

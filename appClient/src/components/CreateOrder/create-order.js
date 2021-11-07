@@ -22,10 +22,16 @@ import bluepack from "../../assets/img/blue-bleach.svg"
 import bluetowel from '../../assets/img/bluetowel.svg'
 import Summary from '../Summary/summary'
 import PastOrder from "../PastOrder/past-order";
+<<<<<<< HEAD
+import { Modal} from 'react-bootstrap';
+import tick from "../../assets/img/tick.svg"
+
+=======
 import whitemore from "../../assets/img/whitemore.svg"
 import activelist from "../../assets/img/activelist.svg"
 import activehome from "../../assets/img/activehome.svg"
 import { getToken } from "../../utils/authOperations";
+>>>>>>> main
 
 function CreateOrder(){   
     const icons=[shirt,tshirt,trousers,jeans,boxers,joggers,others] 
@@ -38,10 +44,15 @@ function CreateOrder(){
     const [orders, setOrders] = useState({});
     const [active, setActive] = useState("create");
     const [create, setCreate] = useState(false);
+<<<<<<< HEAD
+    const [success, setSuccess] = useState(false);
+
+=======
     const [moreicon,setMoreicon]=useState(more)
     const [listicon,setListicon]=useState(list)
     const [homeIcon,setHomeicon]=useState(home)
     
+>>>>>>> main
     useEffect(()=>{
         let token=getToken()
         let header={Authorization:"bearer "+token}
@@ -66,6 +77,7 @@ const handleSubmit=()=>{
     for(let i=0; i<costs.length;i++){
         var total=0
         var service=[]
+        var totalQuantity=0
         if(costs[i][0]>0 && costs[i][1]>0){
             totalQuantity+=Number(costs[i][0])
             total+=costs[i][0]*costs[i][1]
@@ -337,10 +349,43 @@ const handleQuantity=(e)=>{
             {
                 active==="past" && <PastOrder/>
             }
-            { summary && <Summary order={orders} changeParentval={()=>{setSummary(false)}} />}
+            { summary && <Summary successModal={()=>{setSuccess(true)}} pastOrder={false} order={orders} changeParentval={()=>{setSummary(false)}} />}
             <nav className="navbar navbar-inverse fixed-bottom ">
                 <p className="navbar-brand bottomnavbar" style={{'textAlign':"center",'width':"100%",'margin':"0px"}} >2021 ©  Laundry</p>
             </nav>
+                <Modal
+                    dialogClassName="modal-center"
+                    size="md"
+                    show={success}
+                    onHide={() => setSuccess(false)}
+                    aria-labelledby="example-modal-sizes-title-sm"
+                    centered
+                >
+                    <Modal.Header>
+                    <Modal.Title id="example-modal-sizes-title-sm">
+                    </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div>
+                            <img className="success-icon" src={tick} alt="error" />
+                        </div>
+                        <div className="success-message">
+                            <span>Your Order is </span>
+                            <span>Successfull</span>
+                        </div>
+                        <div className="success-message-two">
+                            <span>You can track the delivery in the</span>
+                            <span>"Orders" section</span>
+                        </div>
+                        <div>
+                            <button onClick={()=>{
+                                setSuccess(false)
+                                setActive("past")
+
+                            }} className="success-modal-button">Go to orders</button>
+                        </div>
+                    </Modal.Body>
+                </Modal>
         </div>
     )
 }

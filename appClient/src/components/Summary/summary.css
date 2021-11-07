@@ -49,8 +49,8 @@
 }
 .form-select-style {
   border: none;
-  border-color: transparent;
-  border-bottom: turquoise;
+  background: #f8f9ff;
+  border-bottom: 2px solid #77838f;
   background: #f4f9ff;
 }
 .store-details {

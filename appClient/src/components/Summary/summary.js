@@ -2,22 +2,39 @@ import './summary.css'
 import React from "react";
 import { Modal,Button,ProgressBar } from 'react-bootstrap';
 import tick from "../../assets/img/tick.svg"
-
+import { getToken } from "../../utils/authOperations";
+import axios from "axios";
 
 class Summary extends React.Component{
     constructor(props){
         super(props);
         this.state={
             show:true,
-            addressSelected:0
+            addressSelected:0,
+            storeAddressIndex:-1
         }
     }
     
     componentDidMount(){
         this.setState({show:true})
     }
-    render(){
-        const pastOrder=false
+    createOrder=()=>{
+        const storeAddress=[
+            {
+                "location": "Banglore",
+                "address" : "NG nagar",
+                "phone" : 9567860449,
+                "district" : "Banglore",
+                "state" : "karnataka",
+            },
+            {
+                "location": "Chennai",
+                "address" : "2nd Street",
+                "phone" : 9567860449,
+                "district" : "Chennai",
+                "state" : "Tamilnadu",
+            }
+        ]
         const address=[
             {
                 "addressType":"Home",
@@ -35,89 +52,71 @@ class Summary extends React.Component{
             }
 
         ]
-        const values={
-            "orderId":"0123abc",
-            "status":[
-                    {
-                        "statusCode":"none",
-                        "_id":{"$oid":"617ffb5abf998adcb2f1dcc3"}
-                    },
-                    {
-                        "statusCode":"none",
-                        "_id":{"$oid":"617ffb5abf998adcb2f1dcc3"}
-                    },
-                    {
-                        "statusCode":"none",
-                        "_id":{"$oid":"617ffb5abf998adcb2f1dcc3"}
-                    }
-                ],
-            "products":[
-                {
-                    "name":"Shirt",
-                    "quantity":3,
-                    "serviseTypes":["Washing","Ironing"],
-                    "price":20
-                },
-                {
-                    "name":"Jeans",
-                    "quantity":5,
-                    "serviseTypes":["Washing"],
-                    "price":30
-                },
-                {
-                    "name":"Jogger",
-                    "quantity":2,
-                    "serviseTypes":["Chemical washing","Ironing"],
-                    "price":25
-                },
-                {
-                    "name":"Jogger",
-                    "quantity":2,
-                    "serviseTypes":["Chemical washing","Ironing"],
-                    "price":25
-                },
-                {
-                    "name":"Jogger",
-                    "quantity":2,
-                    "serviseTypes":["Chemical washing","Ironing"],
-                    "price":25
-                },
-                {
-                    "name":"Jogger",
-                    "quantity":2,
-                    "serviseTypes":["Chemical washing","Ironing"],
-                    "price":25
-                },
-                {
-                    "name":"Jogger",
-                    "quantity":2,
-                    "serviseTypes":["Chemical washing","Ironing"],
-                    "price":25
-                }
-        
-            ],
-            "subtotal":350,
-            "pickupCharge":90,
-            "total":260,
-            "dateTime":"2021-11-02T14:00:00.756Z",
-            "deliveryAddress":{
-                    "addressType":"Home",
-                    "streetAddress":"2nd lane st nagar",
-                    "state":"karnataka",
-                    "district":"banglore",
-                    "pincode":520014
-                },
-            "storeAddress":{
-                "location":"banglore",
-                "address":"4th street bl nagar",
-                "phone":5246669,
-                "district":"banglore",
-                "state":"karnataka"
-                },
-            "__v":0
+        let token=getToken()
+        console.log("here it is")
+        let header={Authorization:"bearer "+token}
+        let body={
+            ...this.props.order,
+            deliveryAddress:address[this.state.addressSelected],
+            storeAddress:storeAddress[this.state.storeAddressIndex]
         }
+        
+        axios.post('http://localhost:3005/api/v1/order/create',body,{headers:header})
+        .then(function (response) {
+            console.log(response)
+            if(response.status===200){           
+                console.log(response.data)
+            
+            }
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        this.setState({show:false})
+        this.props.successModal()
+        this.props.changeParentval()
+
+    }
+
+    render(){
+        const storeAddress=[
+            {
+                "location": "Banglore",
+                "address" : "NG nagar",
+                "phone" : 9567860449,
+                "district" : "Banglore",
+                "state" : "karnataka",
+            },
+            {
+                "location": "Chennai",
+                "address" : "2nd Street",
+                "phone" : 9567860449,
+                "district" : "Chennai",
+                "state" : "Tamilnadu",
+            }
+        ]
+        const address=[
+            {
+                "addressType":"Home",
+                "streetAddress":"2nd lane st nagar",
+                "state":"karnataka",
+                "district":"banglore",
+                "pincode":520014
+            },
+            {
+                "addressType":"Other",
+                "streetAddress":"2nd lane st nagar",
+                "state":"karnataka",
+                "district":"banglore",
+                "pincode":520014
+            }
+
+        ]
+        
             
         return(
+            
                 <Modal size="lg" dialogClassName="right_modal modal-dialog modal-content" show={this.state.show} onHide={()=>{
                                                                                                                                 this.setState({show:false})
                                                                                                                                 this.props.changeParentval()
@@ -140,23 +139,26 @@ class Summary extends React.Component{
                                                                 }}>
                         <div className="store-details">
                             <div>
-                                <select className="form-select-style" aria-label="Default select example">
-                                    <option >Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select onClick={(event)=>{this.setState({storeAddressIndex:event.target.value})}} className="form-control form-select-style" aria-label="Default select example">
+                                    <option value="-1" selected>Choose Store Location</option>
+                                    {storeAddress.map((addrs,index)=>{
+                                        return(
+                                            <option key={index} value={index}>{addrs.location}</option>
+                                        )
+                                    })}
                                 </select>
                             </div>
                             <div className="store-details-element">
                                 <span className="style-bold">Phone:</span>
-                                <span>9567860449</span>
+                                <span>{(this.state.storeAddressIndex<=-1)?"":storeAddress[this.state.storeAddressIndex].phone}</span>
+                                
                             </div>
                             <div className="store-details-element">
                                 <span className="style-bold">Store Address:</span>
-                                <span>Near phone booth 10th road</span>
+                                <span>{(this.state.storeAddressIndex<=-1)?"":storeAddress[this.state.storeAddressIndex].address}</span>
                             </div>
                         </div>
-                        { pastOrder && 
+                        { this.props.pastOrder && 
                         <div className="order-status">
                             <div className="custom-row-container-first">
                                 <div className="col">
@@ -244,7 +246,7 @@ class Summary extends React.Component{
                                 <span>Address</span>
                             </div>
                             
-                            { !pastOrder && 
+                            { !this.props.pastOrder && 
                             <div className="address-choice">
                                 {address.map((addr,index)=>{
                                     return(
@@ -265,7 +267,7 @@ class Summary extends React.Component{
                                 })}
                             </div>
                             }
-                            { pastOrder &&
+                            { this.props.pastOrder &&
                                 <div className="address-choice">
                                     <div className="p-2 card  custom-card col-md-4">
                                         <div className="p-0 m-0 card-body">
@@ -282,17 +284,18 @@ class Summary extends React.Component{
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        {(pastOrder && this.props.order.status.length===0) && <button className="btn custom-btn-cancel" onClick={()=>{
+                        {(this.props.pastOrder && this.props.order.status.length===0) && <button className="btn custom-btn-cancel" onClick={()=>{
                                                                                                                             this.setState({show:false})
                                                                                                                             this.props.changeParentval()
                                                                                                                             }}>Cancel</button>}
-                        {(!pastOrder) && <button className="btn custom-btn-confirm" onClick={()=>{
-                                                                                                    this.setState({show:false})
-                                                                                                    this.props.changeParentval()
-                                                                                                    
+                        {(!this.props.pastOrder) && <button disabled={(this.state.storeAddressIndex<=-1)} className="btn custom-btn-confirm" onClick={()=>{
+                                                                                                    this.createOrder()
                                                                                                 }}>Confirm</button>}
                     </Modal.Footer>
                 </Modal>
+                
+            
+                                                                                                
         );
     }
 }
