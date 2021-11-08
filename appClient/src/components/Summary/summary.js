@@ -2,7 +2,7 @@ import './summary.css'
 import React from "react";
 import { Modal,Button,ProgressBar } from 'react-bootstrap';
 import tick from "../../assets/img/tick.svg"
-import { getToken } from "../../utils/authOperations";
+import { getToken, getUser } from "../../utils/authOperations";
 import axios from "axios";
 
 class Summary extends React.Component{
@@ -11,13 +11,12 @@ class Summary extends React.Component{
         this.state={
             show:true,
             addressSelected:0,
-            storeAddressIndex:-1
+            storeAddressIndex:-1,
+            user:{}
         }
     }
     
-    componentDidMount(){
-        this.setState({show:true})
-    }
+    
     createOrder=()=>{
         const storeAddress=[
             {
@@ -57,7 +56,7 @@ class Summary extends React.Component{
         let header={Authorization:"bearer "+token}
         let body={
             ...this.props.order,
-            deliveryAddress:address[this.state.addressSelected],
+            deliveryAddress:this.props.user.address[this.state.addressSelected],
             storeAddress:storeAddress[this.state.storeAddressIndex]
         }
         
@@ -78,6 +77,7 @@ class Summary extends React.Component{
         this.props.changeParentval()
 
     }
+    
 
     render(){
         const storeAddress=[
@@ -139,8 +139,9 @@ class Summary extends React.Component{
                                                                 }}>
                         <div className="store-details">
                             <div>
-                                <select onClick={(event)=>{this.setState({storeAddressIndex:event.target.value})}} className="form-control form-select-style" aria-label="Default select example">
-                                    <option value="-1" selected>Choose Store Location</option>
+                                <select id="storeLocationInputId" disabled={this.props.pastOrder} onClick={(event)=>{this.setState({storeAddressIndex:event.target.value})}} className="form-control form-select-style" aria-label="Default select example">
+                                    { (!this.props.pastOrder) && <option value="-1" selected>Choose Store Location</option>}
+                                    { (this.props.pastOrder) && <option value="-1"selected >{this.props.order.storeAddress.location}</option>}
                                     {storeAddress.map((addrs,index)=>{
                                         return(
                                             <option key={index} value={index}>{addrs.location}</option>
@@ -150,12 +151,13 @@ class Summary extends React.Component{
                             </div>
                             <div className="store-details-element">
                                 <span className="style-bold">Phone:</span>
-                                <span>{(this.state.storeAddressIndex<=-1)?"":storeAddress[this.state.storeAddressIndex].phone}</span>
-                                
+                                { (!this.props.pastOrder) && <span>{(this.state.storeAddressIndex<=-1)?"":storeAddress[this.state.storeAddressIndex].phone}</span>}
+                                { (this.props.pastOrder) && <span>{this.props.order.storeAddress.phone}</span>}
                             </div>
                             <div className="store-details-element">
                                 <span className="style-bold">Store Address:</span>
-                                <span>{(this.state.storeAddressIndex<=-1)?"":storeAddress[this.state.storeAddressIndex].address}</span>
+                                {(!this.props.pastOrder) && <span>{(this.state.storeAddressIndex<=-1)?"":storeAddress[this.state.storeAddressIndex].address}</span>}
+                                {(this.props.pastOrder) && <span>{this.props.order.storeAddress.address}</span>}
                             </div>
                         </div>
                         { this.props.pastOrder && 
@@ -248,7 +250,7 @@ class Summary extends React.Component{
                             
                             { !this.props.pastOrder && 
                             <div className="address-choice">
-                                {address.map((addr,index)=>{
+                                {this.props.user.address.map((addr,index)=>{
                                     return(
                                         <div key={index} className="p-2 card  custom-card col-md-4" onClick={()=>{this.setState({addressSelected:index})}}>
                                             <div className="p-0 m-0 card-body">
@@ -284,8 +286,9 @@ class Summary extends React.Component{
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        {(this.props.pastOrder && this.props.order.status.length===0) && <button className="btn custom-btn-cancel" onClick={()=>{
+                        {(this.props.pastOrder && (this.props.order.status.length===0 && this.props.order.active)) && <button className="btn custom-btn-cancel" onClick={()=>{
                                                                                                                             this.setState({show:false})
+                                                                                                                            this.props.cancel()
                                                                                                                             this.props.changeParentval()
                                                                                                                             }}>Cancel</button>}
                         {(!this.props.pastOrder) && <button disabled={(this.state.storeAddressIndex<=-1)} className="btn custom-btn-confirm" onClick={()=>{

@@ -32,6 +32,7 @@ function LandingPage() {
         axios.post('http://localhost:3005/api/v1/user/signin',{username:email.value,password:password.value})
         .then(function (response) {
             window.localStorage.setItem("Token",response.data.token)
+            window.localStorage.setItem("User",JSON.stringify(response.data.user))
             console.log(response.data.token)
             historyobj.push("/create")
         })

@@ -1,123 +1,24 @@
 import './past-order.css'
 import React, { useState,useEffect } from 'react';
 import eyeIcon from "../../assets/img/eyeicon.svg"
+import warningIcon from "../../assets/img/warning.svg"
 import Summary from "../Summary/summary";
 import axios from "axios";
 import search from "../../assets/img/searchicon.png";
 import { getToken } from "../../utils/authOperations";
+import { Modal} from 'react-bootstrap';
+
 
 
 function PastOrder() {
     const [headings, setheadings] = useState(["Order Id", "Order Date & Time", "Store Location", "City" ,"Store Phone","Total Items","Price","Status","  ", "view"]);
-    let val=[{
-        "orderId":"0123abc",
-        "active":true,
-        "status":[],
-        "products":[
-                {
-                    "name":"jeans",
-                    "quantity":5,
-                    "serviseTypes":[],
-                    "price":450,
-                    "_id":{"$oid":"617ffb5abf998adcb2f1dcc4"}
-                }
-            ],
-        "subtotal":480,
-        "pickupCharge":90,
-        "total":570,
-        "dateTime":"2021-11-02T14:00:00.756Z",
-        "deliveryAddress":{
-                "streetAddress":"2nd lane st nagar",
-                "state":"karnataka",
-                "district":"banglore",
-                "pincode":520014
-            },
-        "storeAddress":{
-            "location":"banglore",
-            "address":"4th street bl nagar",
-            "phone":5246669,
-            "district":"banglore",
-            "state":"karnataka"
-            },
-        "__v":0
-    },
-    {
-        "orderId":"0123abc",
-        "status":[
-                {
-                    "statusCode":"none",
-                    "_id":{"$oid":"617ffb5abf998adcb2f1dcc3"}
-                }
-            ],
-        "products":[
-                {
-                    "name":"jeans",
-                    "quantity":5,
-                    "serviseTypes":[],
-                    "price":450,
-                    "_id":{"$oid":"617ffb5abf998adcb2f1dcc4"}
-                }
-            ],
-        "subtotal":480,
-        "pickupCharge":90,
-        "total":570,
-        "dateTime":"2021-11-02T14:00:00.756Z",
-        "deliveryAddress":{
-                "streetAddress":"2nd lane st nagar",
-                "state":"karnataka",
-                "district":"banglore",
-                "pincode":520014
-            },
-        "storeAddress":{
-            "location":"banglore",
-            "address":"4th street bl nagar",
-            "phone":5246669,
-            "district":"banglore",
-            "state":"karnataka"
-            },
-        "__v":0
-    },
-    {
-        "orderId":"0123abc",
-        "status":[
-                {
-                    "statusCode":"none",
-                    "_id":{"$oid":"617ffb5abf998adcb2f1dcc3"}
-                }
-            ],
-        "products":[
-                {
-                    "name":"jeans",
-                    "quantity":5,
-                    "serviseTypes":[],
-                    "price":450,
-                    "_id":{"$oid":"617ffb5abf998adcb2f1dcc4"}
-                }
-            ],
-        "subtotal":480,
-        "pickupCharge":90,
-        "total":570,
-        "dateTime":"2021-11-02T14:00:00.756Z",
-        "deliveryAddress":{
-                "streetAddress":"2nd lane st nagar",
-                "state":"karnataka",
-                "district":"banglore",
-                "pincode":520014
-            },
-        "storeAddress":{
-            "location":"banglore",
-            "address":"4th street bl nagar",
-            "phone":5246669,
-            "district":"banglore",
-            "state":"karnataka"
-            },
-        "__v":0
-    }
     
-    ]
     const [orders, setOrders] = useState([]);
     const [summary, setSummary] = useState(false);
     const [orderIndex, setOrderIndex] = useState(0);
+    const [cancelOrder, setCancelOrder] = useState(false);
+    const [cancelOrderIndex, setcancelOrderIndex] = useState(0);
+    
 
     const getData=()=>{
         let token=getToken()
@@ -133,11 +34,11 @@ function PastOrder() {
             console.log(error);
         })
     }
-    const cancelOrder=(ind)=>{
+    const cancelOrderfunc=()=>{
         let token=getToken()
         let header={Authorization:"bearer "+token}
         let body={
-            id:orders[ind]._id
+            id:orders[cancelOrderIndex]._id
         }
         
         axios.post('http://localhost:3005/api/v1/order/cancel',body,{headers:header})
@@ -193,9 +94,13 @@ function PastOrder() {
                                         <td>{order.totalQuantity}</td>
                                         <td>{order.total}</td>
                                         <td>{(order.status.length===0)?"Ready to pickup":order.status[order.status.length-1].statusCode}</td>
-                                        <td className="col-md-1" onClick={()=>{cancelOrder(index)}} > {(order.active)?<button className="table-cancel-btn">Cancel Order</button>:<span style={{marginLeft:"5px"}}>Cancelled</span>} </td>
+                                        <td className="col-md-1" onClick={()=>{
+                                                                                setcancelOrderIndex(index)
+                                                                                setCancelOrder(true)
+                                                                                }} > {(order.active)?<button className="table-cancel-btn">Cancel Order</button>:<span style={{marginLeft:"5px"}}>Cancelled</span>} </td>
                                         <td onClick={()=>{setSummary(true)
                                                                 setOrderIndex(index)
+                                                                setcancelOrderIndex(index)
                                                                 }}><img src={eyeIcon} alt="error" /></td>
                                     </tr>
                                 )
@@ -206,7 +111,46 @@ function PastOrder() {
                     
                 </div>
             
-            { summary && <Summary pastOrder={true} order={orders[orderIndex]} changeParentval={()=>{setSummary(false)}} />}
+            { summary && <Summary pastOrder={true} order={orders[orderIndex]} changeParentval={()=>{setSummary(false)}} cancel={()=>{setCancelOrder(true)}} />}
+            <Modal
+                dialogClassName="modal-center"
+                size="md"
+                show={cancelOrder}
+                onHide={() => setCancelOrder(false)}
+                aria-labelledby="example-modal-sizes-title-sm"
+                centered
+            >
+                <Modal.Header  className="cancel-modal-header">
+                
+                            <div className="cancel-modal-header-items">
+                                <span className="header-span">Alert</span>
+                                <div className="cancel-modal-close-button">
+                                    <button className="close-button-inline header-span" onClick={()=>{
+                                                                                            setCancelOrder(false)
+                                                                                            }}>X</button>
+                                </div>
+                            </div>
+                
+                </Modal.Header>
+                <Modal.Body>
+                    <div>
+                        <div className="cancel-modal-message">
+                            <img className="warning-icon" src={warningIcon} alt="error" />
+                            <div className="col-div-cancel">
+                                <span>Are you sure want to cancel the</span>
+                                <span>order No: OR1213</span>
+                            </div>
+                        </div>
+                        <div>
+                            <button className="proceed-btn" onClick={()=>{
+                                                                            cancelOrderfunc()
+                                                                            setCancelOrder(false)
+                                                                            }}>Proceed</button>
+                        </div>
+                    </div>
+
+                </Modal.Body>
+            </Modal>
                 
         </div>
       

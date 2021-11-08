@@ -2,12 +2,9 @@ import './App.css';
 import React from 'react';
 import { BrowserRouter as Router ,Switch, Route} from "react-router-dom";
 import LandingPage from "./components/Landingpage/landing-page";
-import Nav from "./components/Nav/nav"
-import Footer from './components/Footer/footer';
-import Register from './components/Register/register';
-import PastOrder from "./components/PastOrder/past-order";
-import Summary from "./components/Summary/summary";
 import CreatePage from "./components/CreateOrder/create-order"
+import PrivateRoute from './private-route/private-route';
+ 
 function App() {
   return (
     <div className="App">
@@ -15,12 +12,7 @@ function App() {
         <div>
           <Switch>
                   <Route exact path='/'><LandingPage/></Route>
-                  <Route exact path='/Register'><Register/></Route>
-                  <Route exact path='/past'> <PastOrder/> </Route>  
-                  <Route exact path='/summary'> <Summary/> </Route>
-
-                  <Route exact path='/create'><Nav/><CreatePage/></Route>
-                  {/* <Route exact path='/post' component={Nav}/> */}
+                  <PrivateRoute exact path='/create' component={CreatePage}/>
           </Switch>
         </div>
       </Router>

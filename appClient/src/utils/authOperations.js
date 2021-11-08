@@ -4,7 +4,13 @@ function getToken(){
     }
     return ""
 }
-
+function getUser(){
+    if(window.localStorage){
+        var retrievedObject = window.localStorage.getItem("User");
+        return JSON.parse(retrievedObject)
+    }
+    return ""
+}
 function isAuthenticated(){
     if(window.localStorage){
         const token=window.localStorage.getItem("Token");
@@ -13,4 +19,4 @@ function isAuthenticated(){
     return false;
 }
 
-export {isAuthenticated,getToken}
+export {isAuthenticated,getToken,getUser}
