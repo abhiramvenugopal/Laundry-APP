@@ -1,5 +1,5 @@
 import './landing-page.css'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router ,Switch, Route, Link,useHistory } from "react-router-dom";
 import Nav from "../Nav/nav";
 import Footer from "../Footer/footer"
@@ -7,8 +7,12 @@ import Register from "../Register/register";
 const axios = require('axios');
 
 function LandingPage() {
+  useEffect(()=>{
+    console.log('hello')
+    window.localStorage.removeItem('Token')
+  },[])
   const [login, setLogin] = useState(true);
-
+  
   var historyobj=useHistory();
   const useFormInput = initialValue => {
       const [value, setValue] = useState(initialValue);
@@ -46,7 +50,6 @@ function LandingPage() {
         
     }
   }
-
     return (
         <div>
             <header className="header-section">

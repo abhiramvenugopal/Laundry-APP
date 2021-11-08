@@ -11,8 +11,8 @@ function App() {
       <Router>
         <div>
           <Switch>
-                  <Route exact path='/'><LandingPage/></Route>
                   <PrivateRoute exact path='/create' component={CreatePage}/>
+                  <Route exact path='/'><LandingPage/>{window.localStorage.clear()}</Route>
           </Switch>
         </div>
       </Router>
