@@ -193,7 +193,7 @@ function PastOrder() {
                                         <td>{order.totalQuantity}</td>
                                         <td>{order.total}</td>
                                         <td>{(order.status.length===0)?"Ready to pickup":order.status[order.status.length-1].statusCode}</td>
-                                        <td className="col-md-1" onClick={()=>{cancelOrder(index)}} > {(order.active)?<button className="table-cancel-btn">Cancel Order</button>:<span style={{marginLeft:"5px"}}>Cancelled</span>} </td>
+                                        <td className="col-md-1.5" onClick={()=>{cancelOrder(index)}} > {(order.active)?<button className="table-cancel-btn">Cancel Order</button>:<span style={{marginLeft:"5px"}}>Cancelled</span>} </td>
                                         <td onClick={()=>{setSummary(true)
                                                                 setOrderIndex(index)
                                                                 }}><img src={eyeIcon} alt="error" /></td>

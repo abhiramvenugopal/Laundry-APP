@@ -71,7 +71,6 @@ const handleSubmit=()=>{
     for(let i=0; i<costs.length;i++){
         var total=0
         var service=[]
-        var totalQuantity=0
         if(costs[i][0]>0 && costs[i][1]>0){
             totalQuantity+=Number(costs[i][0])
             total+=costs[i][0]*costs[i][1]
