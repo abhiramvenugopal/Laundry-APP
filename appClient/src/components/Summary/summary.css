@@ -52,6 +52,7 @@
   background: #f8f9ff;
   border-bottom: 2px solid #77838f;
   background: #f4f9ff;
+  width: 10vw;
 }
 .store-details {
   background: #f4f9ff 0% 0% no-repeat padding-box;
@@ -171,3 +172,4 @@
   display: flex;
   text-align: left !important;
 }
+

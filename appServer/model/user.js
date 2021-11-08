@@ -7,6 +7,7 @@ const userSchema= new Schema({
     phone :{type :String, required:true,unique:true},
     address: [
         {
+            addressType:{type:String,default:"Home"},
             streetAddress :{type:String, required:true},
             state :{type:String, required:true},
             district :{type:String, required:true},

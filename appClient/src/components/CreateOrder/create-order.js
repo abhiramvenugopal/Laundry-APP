@@ -24,11 +24,11 @@ import Summary from '../Summary/summary'
 import PastOrder from "../PastOrder/past-order";
 import { Modal} from 'react-bootstrap';
 import tick from "../../assets/img/tick.svg"
-
 import whitemore from "../../assets/img/whitemore.svg"
 import activelist from "../../assets/img/activelist.svg"
 import activehome from "../../assets/img/activehome.svg"
-import { getToken } from "../../utils/authOperations";
+import { getToken,getUser } from "../../utils/authOperations";
+import Nav from "../Nav/nav";
 
 function CreateOrder(){   
     const icons=[shirt,tshirt,trousers,jeans,boxers,joggers,others] 
@@ -46,8 +46,10 @@ function CreateOrder(){
     const [moreicon,setMoreicon]=useState(more)
     const [listicon,setListicon]=useState(list)
     const [homeIcon,setHomeicon]=useState(home)
+    const [user, setUser] = useState({})
     
     useEffect(()=>{
+        setUser(getUser())
         let token=getToken()
         let header={Authorization:"bearer "+token}
         axios.get(
@@ -266,6 +268,10 @@ const handleQuantity=(e)=>{
 }
 
     return(
+        <div>
+        <header className="header-section">
+              <Nav/>
+        </header>
         <div className="orderscomponent">
             <div className="sidebar">
                 <a  onClick={()=>{setListicon(list);setMoreicon(whitemore);setHomeicon(activehome)}} href="/"><img className="sidebaricons"  src={homeIcon}alt="home" name="0"></img></a>
@@ -299,7 +305,7 @@ const handleQuantity=(e)=>{
                             {Object.values(products).map((each,ind)=>{
                                 return(            
                                     <tr key={ind}>
-                                            <td scope="row" className="productname">
+                                            <td className="productname">
                                                 <div>
                                                     <img src={icons[ind]} alt="img"  width="45" height="45" ></img>
                                                 </div>
@@ -309,7 +315,7 @@ const handleQuantity=(e)=>{
                                                 </div>
                                             </td>
                                         
-                                        <td scope="row"><input id={ind} onChange={handleQuantity} className="Quantity" type="number"  min="1" name={ind}></input></td>
+                                        <td><input id={ind} onChange={handleQuantity} className="Quantity" type="number"  min="1" name={ind}></input></td>
                                         
                                         <td><div className="imagescolumn">
                                             <img onClick={handleWash}  style={{"color":color[ind],}}   src={image[ind][0]}   alt="img" name={ind}></img>
@@ -320,7 +326,7 @@ const handleQuantity=(e)=>{
                                         </td>
                                         
                                             
-                                            <td scope="row" className={(costs[ind][1]>0?"display":"hide")} >{costs[ind][0]}x{costs[ind][1]}=<b style={{color:'#5861AE'}}>{costs[ind][0]*costs[ind][1]}</b></td>
+                                            <td className={(costs[ind][1]>0?"display":"hide")} >{costs[ind][0]}x{costs[ind][1]}=<b style={{color:'#5861AE'}}>{costs[ind][0]*costs[ind][1]}</b></td>
                                             <td className={(costs[ind][1]>0?"hide":"display")}>--</td>
                                         
                                             <td><button name={ind} onClick={handlereset} type="submit" className={(costs[ind][1]>0 ? " btn btn-outline-primary button reset":"hide" )}>reset</button></td>
@@ -342,7 +348,7 @@ const handleQuantity=(e)=>{
             {
                 active==="past" && <PastOrder/>
             }
-            { summary && <Summary successModal={()=>{setSuccess(true)}} pastOrder={false} order={orders} changeParentval={()=>{setSummary(false)}} />}
+            { summary && <Summary user={user} successModal={()=>{setSuccess(true)}} pastOrder={false} order={orders} changeParentval={()=>{setSummary(false)}} />}
             <nav className="navbar navbar-inverse fixed-bottom ">
                 <p className="navbar-brand bottomnavbar" style={{'textAlign':"center",'width':"100%",'margin':"0px"}} >2021 ©  Laundry</p>
             </nav>
@@ -379,6 +385,7 @@ const handleQuantity=(e)=>{
                         </div>
                     </Modal.Body>
                 </Modal>
+        </div>
         </div>
     )
 }

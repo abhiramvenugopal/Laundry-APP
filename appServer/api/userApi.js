@@ -21,7 +21,7 @@ router.post('/signin',(req,res)=>{
         .then(doMatch=>{
             if(doMatch){
                 const token =jwt.sign({data:savedUser._id},process.env.JWT_SECRET)
-                res.json({status:"success",token:token})
+                res.json({status:"success",token:token,user:{name:savedUser.name,email:savedUser.email,phone:savedUser.phone,address:savedUser.address}})
             }
             else{
                 return res.status(422).json({error:"password is wrong"})

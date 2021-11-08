@@ -31,3 +31,45 @@
   color: white;
   background: red;
 }
+.cancel-modal-header {
+  color: white;
+  background: #5861ae;
+  height: 8px;
+}
+.header-span {
+  font-size: medium;
+}
+.cancel-modal-header-items {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  top: -1rem;
+}
+.cancel-modal-close-button {
+  position: fixed;
+  right: 1rem;
+}
+.warning-icon {
+  width: 10%;
+  height: 10%;
+  margin-left: 4%;
+  margin-right: 10%;
+  margin-top: 4%;
+}
+.proceed-btn {
+  width: 30%;
+  height: 4vh;
+  background: #5861ae;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+.col-div-cancel {
+  display: flex;
+  flex-direction: column;
+}
+.cancel-modal-message {
+  display: flex;
+  flex-direction: row;
+  margin: 5%;
+}
