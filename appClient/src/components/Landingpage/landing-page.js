@@ -12,7 +12,7 @@ function LandingPage() {
     window.localStorage.removeItem('Token')
   },[])
   const [login, setLogin] = useState(true);
-  
+  const [locked,setLocked]=useState(true)
   var historyobj=useHistory();
   const useFormInput = initialValue => {
       const [value, setValue] = useState(initialValue);
@@ -25,6 +25,16 @@ function LandingPage() {
           onChange: handleChange
       }
   }
+  const handlePassword=()=>{
+    if(locked){
+      document.querySelector("#inputFeild").type="text"
+      setLocked(false)
+    }
+    else{
+      document.querySelector('#inputFeild').type="password"
+      setLocked(true)
+    }
+}
   const email = useFormInput('');
   const password = useFormInput('');
 
@@ -91,8 +101,10 @@ function LandingPage() {
                           <div className="col-md-12 form-group set-flex-start input-div-margin">
                             <input {...email} type="text" className="form-control custom-form-input input-full-width"  placeholder="Name/Email"/>
                           </div>
-                          <div className=" col-md-12 form-group set-flex-start input-div-margin">
-                            <input {...password}  type="password" className="form-control custom-form-input input-full-width"  placeholder="Password"/>
+                          <div className=" col-md-12 form-group set-flex-start input-div-margin ">
+                           <input {...password}  id="inputFeild" type="password" className="form-control custom-form-input input-full-width "  placeholder="Password"></input>
+                           <span style={{fontSize:"24px",color:"grey",display:"flex",position:"absolute",right:'2rem',top:'0.5rem',justifyContent:"right",}} onClick={handlePassword} className={(locked?"fa fa-lock ":"fa fa-unlock ")}></span>
+                           
                           </div>
                           <div className="sigin-btn-div">
                             <button  className="register-btn " type="submit">Sign In</button>
@@ -111,6 +123,7 @@ function LandingPage() {
 
             </div>}
             {(!login) && <Register changeParentval={()=>{setLogin(true)}} />}
+          <hr color="#5861AE" style={{border:'1!important'}} />
             <footer className="footer-section">
                 <Footer/>
             </footer>

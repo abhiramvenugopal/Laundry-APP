@@ -64,6 +64,17 @@ function CreateOrder(){
             }, 100);
         })
         .catch(err=>{console.log('err')})
+
+        if (active==='create'){
+            setListicon(list)
+            setMoreicon(more)
+            setHomeicon(home)
+        }
+        if (active==="past"){
+            setListicon(activelist)
+            setMoreicon(whitemore)
+            setHomeicon(home)
+        }
     },[])
 
 const handleSubmit=()=>{
