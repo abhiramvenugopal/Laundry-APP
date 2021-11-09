@@ -7,6 +7,8 @@ import Register from "../Register/register";
 const axios = require('axios');
 
 function LandingPage() {
+  const [loginFailed, setLoginFailed] = useState(false)
+  const [wentWrong, setWentWrong] = useState(false)
   useEffect(()=>{
     console.log('hello')
     window.localStorage.removeItem('Token')
@@ -51,20 +53,22 @@ function LandingPage() {
             historyobj.push("/create")
         })
         .catch(function (error) {
-            // handle error
-            console.log(error);
+          setLoginFailed(true)
         })
     } catch (error) {
-        console.log(error)
-        alert("login Failed")
+      setWentWrong(true)
         
     }
   }
     return (
-        <div>
+        <div className="landing-page-container">
             <header className="header-section">
               <Nav/>
             </header>
+            { wentWrong && <div class="alert alert-warning alert-dismissable">
+              <button  class="close" data-dismiss="alert" aria-label="close">×</button>
+              <strong>Something went wrong!</strong>
+            </div>}
             {login &&
             <div className="row">
               <div className="col-md-6 left-section">
@@ -109,7 +113,10 @@ function LandingPage() {
                           <div className="sigin-btn-div">
                             <button  className="register-btn " type="submit">Sign In</button>
                           </div>
-
+                          {loginFailed && <div class="alert alert-danger m-3" role="alert">
+                          Wrong credentials Invalid username or password
+                          </div>}
+                          
                       </div>
                           
                         
@@ -123,45 +130,20 @@ function LandingPage() {
 
             </div>}
             {(!login) && <Register changeParentval={()=>{setLogin(true)}} />}
-          <hr color="#5861AE" style={{border:'1!important'}} />
-            <footer className="footer-section">
-                <Footer/>
-            </footer>
+            <div className="promo-section">
+                <div className="center">
+                    <hr className="hr-promo" />
+                    <h3>Now Refer & Earn ₹500 for every referral*</h3>
+                    <p>* Terms and conditions will be applied</p>
+                </div>
+            </div>
+            <footer>
+              <Footer/>
 
+            </footer>
         </div>
 
-      // <div className="container">
-      //   <div className="row">
-      //     <div className="col bg-white-light">
-      //       <div className="center pt-5">
-      //         <h1 className="text-primary font-weight-bold"style={{marginLeft:"-200px" }}>Laundry</h1><br/>
-      //         <h1 className="text-primary font-weight-bold"style={{marginLeft:"-220px"}}>Service</h1><br/>
-      //         <p style={{marginLeft:"-220px"}}>Doorstep Wash & Dryclean Service</p>
-      //       </div><br/><br/>
-      //       <div style={{marginLeft:"-250px"}}>
-      //         <p>Don’t Have An Account?</p>
-      //       <button type="submit" className="btn btn-primary"style={{marginLeft:"-90px"}}>Register</button>
-      //       </div>
-      //     </div>
-      //     <div className="col bg-light">
-      //          <h2 className="text-primary pt-5" style={{marginLeft:"-430px"}}>SIGN IN</h2><br/>
-      //          <form onSubmit={handleSubmit}>
-      //               <div className="form-group">
-      //                 <label className="text-primary"style={{marginLeft:"-440px"}}>Phone/Email</label><br/><br/>
-      //                 <input  {...email} type="email" className="form-control"  placeholder="Phone/Email"></input>
-      //               </div><br/>
-      //               <div className="form-group">
-      //                 <label className="text-primary"style={{marginLeft:"-460px"}}>Password</label><br/><br/>
-      //                 <input {...password} type="password" className="form-control" placeholder="Password"></input>
-      //               </div>
-      //               <a className="text-primary"style={{marginLeft:"380px"}}>Forget Password?</a>
-      //               <br/>
-                    
-      //               <button type="submit" className="btn btn-primary">Sign in</button>
-      //           </form>
-      //     </div>
-      //   </div>
-      // </div>
+      
     );
   }
 export default LandingPage;

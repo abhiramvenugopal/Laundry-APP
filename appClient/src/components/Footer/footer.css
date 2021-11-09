@@ -1,1 +1,21 @@
 /* css */
+.footer {
+  background-image: url("../../assets/img/Footer.svg");
+}
+.about-us-section {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding-left: 10%;
+}
+.custom-col {
+  display: flex;
+  flex-direction: column;
+}
+.custom-span-lg {
+  font-size: larger;
+  font-weight: 500;
+}
+.custom-span-md {
+  font-weight: 500;
+}
