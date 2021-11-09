@@ -25,3 +25,11 @@
   border: none;
   width: 100vw;
 }
+.input-icon {
+  float: right !important ;
+  position: absolute;
+  display: flex;
+  justify-content: right;
+  color: grey;
+  width: 90%;
+}

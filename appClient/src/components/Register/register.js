@@ -14,6 +14,7 @@ function Register(props)
     const [state,setState]=useState("");
     const [password,setPassword]=useState("");
     const [streetAddress,setStreetAddress]=useState("");
+    const [locked,setLocked]=useState(true)
     const history=useHistory();
 
   async function signUP(event){
@@ -32,6 +33,16 @@ function Register(props)
       result= await result.json()
       console.log("result:", result)
       props.changeParentval()
+    }
+    const handlePasswordFeild=()=>{
+      if (locked){
+        setLocked(false)
+        document.querySelector("#passwordfeild").type="text"
+      }
+      else{
+        setLocked(true)
+        document.querySelector("#passwordfeild").type="password"
+      }
     }
     return(
         <div>
@@ -107,7 +118,8 @@ function Register(props)
                             <input value={pincode} onChange={(e)=>setPincode(e.target.value)} type="number" className="form-control custom-form-input"  placeholder="Pincode"/>
                           </div>
                           <div className="col-md-6 form-group set-flex-start">
-                            <input value={password} onChange={(e)=>setPassword(e.target.value)} type="password" className="form-control custom-form-input"  placeholder="Password"/>
+                            <input value={password} onChange={(e)=>setPassword(e.target.value)} id="passwordfeild" type="password" className="form-control custom-form-input"  placeholder="Password"/>
+                            <span style={{fontSize:"24px",color:"grey",display:"flex",position:"absolute",right:"2rem",top:'0.5rem',justifyContent:"right",}} onClick={handlePasswordFeild} className={(locked?"fa fa-lock":"fa fa-unlock")} ></span>
                           </div>
                     </div>
                     <div className="reg-btn-chk">
