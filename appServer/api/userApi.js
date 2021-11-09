@@ -4,7 +4,9 @@ const router=express.Router();
 const userModel= require("../model/user")
 const bcrypt=require('bcrypt')
 const jwt =require("jsonwebtoken");
+const middleware=require("../util/middleware")
 
+router.use("/newaddress",middleware)
 
 router.post('/signin',(req,res)=>{
     const {username,password}=req.body
@@ -48,6 +50,34 @@ router.post("/register",async function(req,res){
             })
             
         });
+    } catch (error) {
+        res.status(500).json({status:"failed"})
+        console.log("error",error)
+        
+    }
+    
+    
+})
+router.post("/newaddress",async function(req,res){
+    let reqObject={...req.body}
+    console.log(reqObject)
+    try {
+        userModel.updateOne({_id:req.user},{$push:{address:reqObject}}).then(
+            (response)=>{
+                userModel.findOne({_id:req.user}).then(
+                    (respo)=>{
+                        res.status(200).json({status:"success",address:respo.address})
+                    }
+                )
+                
+            },
+            (err)=>{
+                res.status(500).json({
+                    status:"failed",
+                    message:err
+                })
+            }
+        )  
     } catch (error) {
         res.status(500).json({status:"failed"})
         console.log("error",error)

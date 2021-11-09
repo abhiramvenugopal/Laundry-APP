@@ -12,10 +12,48 @@ class Summary extends React.Component{
             show:true,
             addressSelected:0,
             storeAddressIndex:-1,
-            user:{}
+            user:{},
+            addressForm:false,
+            streetAddress:"",
+            district:"",
+            state:"",
+            pincode:0,
+            addressType:"",
+            warning:false,
+            address:(!this.props.pastOrder)?this.props.user.address:[]
         }
     }
     
+    addAddress=()=>{
+        let adrsObject={
+            addressType:this.state.addressType,
+            streetAddress:this.state.streetAddress,
+            state:this.state.state,
+            district:this.state.district,
+            pincode:this.state.pincode,
+        }
+        console.log(adrsObject)
+        let token=getToken()
+        let header={Authorization:"bearer "+token}
+        axios.post('http://localhost:3005/api/v1/user/newaddress',adrsObject,{headers:header})
+        .then(function (response) {
+            console.log(response)
+            if(response.status===200){           
+                console.log(response.data)
+                this.setState({address:response.data.address})
+                if(response.data.status==="success"){
+                    this.setState({warning:true})
+                }
+            }
+        }.bind(this))
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+
+
+        this.setState({addressForm:false})
+    }
     
     createOrder=()=>{
         const storeAddress=[
@@ -34,29 +72,12 @@ class Summary extends React.Component{
                 "state" : "Tamilnadu",
             }
         ]
-        const address=[
-            {
-                "addressType":"Home",
-                "streetAddress":"2nd lane st nagar",
-                "state":"karnataka",
-                "district":"banglore",
-                "pincode":520014
-            },
-            {
-                "addressType":"Other",
-                "streetAddress":"2nd lane st nagar",
-                "state":"karnataka",
-                "district":"banglore",
-                "pincode":520014
-            }
-
-        ]
+        
         let token=getToken()
-        console.log("here it is")
         let header={Authorization:"bearer "+token}
         let body={
             ...this.props.order,
-            deliveryAddress:this.props.user.address[this.state.addressSelected],
+            deliveryAddress:this.state.address[this.state.addressSelected],
             storeAddress:storeAddress[this.state.storeAddressIndex]
         }
         
@@ -95,26 +116,7 @@ class Summary extends React.Component{
                 "district" : "Chennai",
                 "state" : "Tamilnadu",
             }
-        ]
-        const address=[
-            {
-                "addressType":"Home",
-                "streetAddress":"2nd lane st nagar",
-                "state":"karnataka",
-                "district":"banglore",
-                "pincode":520014
-            },
-            {
-                "addressType":"Other",
-                "streetAddress":"2nd lane st nagar",
-                "state":"karnataka",
-                "district":"banglore",
-                "pincode":520014
-            }
-
-        ]
-        
-            
+        ]    
         return(
             
                 <Modal size="lg" dialogClassName="right_modal modal-dialog modal-content" show={this.state.show} onHide={()=>{
@@ -130,6 +132,7 @@ class Summary extends React.Component{
                                                                                         this.props.changeParentval()
                                                                                         }}>X</button>
                             </div>
+                            
 
                         </Modal.Title>
                     </Modal.Header>
@@ -137,6 +140,12 @@ class Summary extends React.Component{
                                                                 maxHeight: 'calc(100vh - 210px)',
                                                                 overflowY: 'auto'
                                                                 }}>
+                        {
+                            this.state.warning &&
+                            <div className="alert alert-primary" role="alert">
+                                Address Added successfully
+                            </div>
+                        }
                         <div className="store-details">
                             <div>
                                 <select id="storeLocationInputId" disabled={this.props.pastOrder} onClick={(event)=>{this.setState({storeAddressIndex:event.target.value})}} className="form-control form-select-style" aria-label="Default select example">
@@ -250,7 +259,7 @@ class Summary extends React.Component{
                             
                             { !this.props.pastOrder && 
                             <div className="address-choice">
-                                {this.props.user.address.map((addr,index)=>{
+                                {this.state.address.map((addr,index)=>{
                                     return(
                                         <div key={index} className="p-2 card  custom-card col-md-4" onClick={()=>{this.setState({addressSelected:index})}}>
                                             <div className="p-0 m-0 card-body">
@@ -267,6 +276,64 @@ class Summary extends React.Component{
 
                                     )
                                 })}
+                                <button className="add-new-btn" onClick={()=>{this.setState({addressForm:true})}}>ADD NEW</button>
+                                <Modal
+                                    show={this.state.addressForm}
+                                    onHide={()=>{this.setState({addressForm:false})}}
+                                    backdrop="static"
+                                    keyboard={false}
+                                    dialogClassName="form-modal"
+                                    centered
+                                >
+                                    <Modal.Header closeButton>
+                                    <Modal.Title>Add New Address</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <form>
+                                            <div className="form-group set-flex-start">
+                                                <input value={this.state.addressType} onChange={(e)=>this.setState({addressType:e.target.value})} type="text" className="form-control custom-form-input"  placeholder="Address Type"/>
+                                            </div>
+                                            <div className="form-group set-flex-start">
+                                                <input value={this.state.streetAddress} onChange={(e)=>this.setState({streetAddress:e.target.value})} type="text" className="form-control custom-form-input"  placeholder="Address"/>
+                                            </div>
+                                            <div className="w-100 form-group set-flex-start custom-select">
+                                                <select value={this.state.district} onChange={(e)=>this.setState({district:e.target.value})}  class="w-100 form-select form-select-lg mb-3 custom-form-input w-100" aria-label=".form-select-lg example">
+                                                <option selected>District</option>
+                                                <option value="Thrissur">Thrissur</option>
+                                                <option value="Visakhapatnam">Visakhapatnam</option>
+                                                <option value="Bengaluru">Bengaluru </option>
+                                                <option value="Chennai">Chennai</option>
+                                                <option value="Coimbatore">Coimbatore</option>
+                                                </select>
+                                            </div>
+                                            <div value={this.state.state} onChange={(e)=>this.setState({state:e.target.value})} className=" col-md-6 form-group set-flex-start custom-select">
+                                                <select class="form-select form-select-lg mb-3 custom-form-input w-100" aria-label=".form-select-lg example">
+                                                <option selected>State</option>
+                                                <option value="Kerala">Kerala</option>
+                                                <option value="Tamilnadu">Tamilnadu</option>
+                                                <option value="Karnataka">Karnataka</option>
+                                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                                </select>
+                                            </div>
+                                            <div className="col-md-6 form-group set-flex-start">
+                                                <input value={this.state.pincode} onChange={(e)=>this.setState({pincode:e.target.value})} type="number" className="form-control custom-form-input"  placeholder="Pincode"/>
+                                            </div>
+                                        </form>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                    <Button  variant="secondary" onClick={()=>{this.setState({addressForm:false})}}>
+                                        Close
+                                    </Button>
+                                    <Button disabled={
+                                         !(this.state.streetAddress &&
+                                         this.state.district &&
+                                         this.state.state &&
+                                         this.state.pincode &&
+                                         this.state.addressType) 
+                                    } 
+                                                onClick={()=>{this.addAddress()}} variant="primary">Submit</Button>
+                                    </Modal.Footer>
+                                </Modal>
                             </div>
                             }
                             { this.props.pastOrder &&
@@ -281,6 +348,7 @@ class Summary extends React.Component{
                                     </div>
                                 </div>
                             }
+                            
                             
                             
                         </div>

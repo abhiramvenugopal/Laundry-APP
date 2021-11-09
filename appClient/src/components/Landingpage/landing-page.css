@@ -1,6 +1,6 @@
 /* css */
 .login-container {
-  margin: 5vw;
+  margin: 2vw;
 }
 .signin-form {
   width: 100%;
@@ -13,4 +13,15 @@
 }
 .sigin-btn-div {
   margin-top: 10%;
+}
+.landing-page-container {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.hr-promo {
+  height: 3px;
+  color: #5861ae;
+  background-color: #5861ae;
+  border: none;
+  width: 100vw;
 }

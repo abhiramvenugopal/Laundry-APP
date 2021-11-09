@@ -17,8 +17,8 @@ function PastOrder() {
     const [summary, setSummary] = useState(false);
     const [orderIndex, setOrderIndex] = useState(0);
     const [cancelOrder, setCancelOrder] = useState(false);
-    const [cancelOrderIndex, setcancelOrderIndex] = useState(0);
-    
+    const [cancelOrderIndex, setcancelOrderIndex] = useState();
+    const [wentWrong, setWentWrong] = useState(false)
 
     const getData=()=>{
         let token=getToken()
@@ -30,6 +30,7 @@ function PastOrder() {
             console.log(response.data)
         })
         .catch(function (error) {
+            setWentWrong(true)
             // handle error
             console.log(error);
         })
@@ -51,6 +52,7 @@ function PastOrder() {
             }
         })
         .catch(function (error) {
+            setWentWrong(true)
             // handle error
             console.log(error);
         })
@@ -64,6 +66,10 @@ function PastOrder() {
     return (
         <div>
             <div className="container">
+                    { wentWrong && <div class="alert alert-warning alert-dismissable">
+                    <button onClick={()=>{setWentWrong(false)}}  class="close" data-dismiss="alert" aria-label="close">×</button>
+                    <strong>Something went wrong please try again!</strong>
+                    </div>}
                     <div className="headings">
                         <h3 style={{"float":"left" , "marginBottom":"3%"}}>Orders | {orders.length}</h3>
                     <div className="search">    
@@ -138,7 +144,7 @@ function PastOrder() {
                             <img className="warning-icon" src={warningIcon} alt="error" />
                             <div className="col-div-cancel">
                                 <span>Are you sure want to cancel the</span>
-                                <span>order No: OR1213</span>
+                                <span>order No: {(cancelOrderIndex)?orders[cancelOrderIndex].orderId:"0"}</span>
                             </div>
                         </div>
                         <div>
